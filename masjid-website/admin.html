@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Masjid</title>
+</head>
+<body>
+<h2>Tambah Jadwal Pengajian</h2>
+<input id="hari" placeholder="Hari">
+<input id="tema" placeholder="Tema">
+<input id="waktu" placeholder="Waktu">
+<button onclick="saveKajian()">Simpan</button>
+
+<script>
+function saveKajian() {
+    const data = {
+        hari: document.getElementById("hari").value,
+        tema: document.getElementById("tema").value,
+        waktu: document.getElementById("waktu").value
+    };
+
+    let kajian = JSON.parse(localStorage.getItem("kajian")) || [];
+    kajian.push(data);
+    localStorage.setItem("kajian", JSON.stringify(kajian));
+
+    alert("Tersimpan!");
+}
+</script>
+</body>
+</html>
