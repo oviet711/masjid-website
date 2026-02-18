@@ -9,8 +9,8 @@ async function sendMessage() {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": "Bearer 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",
-            "HTTP-Referer": "https://yourwebsite.github.io",
+            "Authorization": "Bearer API_KEY",
+            "HTTP-Referer": "https://oviet711.github.io",
             "X-Title": "Masjid Chatbot"
         },
         body: JSON.stringify({
@@ -33,3 +33,4 @@ async function sendMessage() {
 
     chatWindow.innerHTML += "<p><b>AI:</b> " + reply + "</p>";
 }
+
