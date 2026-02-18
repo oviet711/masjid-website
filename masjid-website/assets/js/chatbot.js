@@ -5,7 +5,7 @@ async function sendMessage() {
 
     chatWindow.innerHTML += "<p><b>Anda:</b> " + input + "</p>";
 
-    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    const response = await fetch("https://masjid-chatbot-proxy.oviet711.workers.dev", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -33,4 +33,5 @@ async function sendMessage() {
 
     chatWindow.innerHTML += "<p><b>AI:</b> " + reply + "</p>";
 }
+
 
