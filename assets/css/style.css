@@ -11,6 +11,22 @@ body {
   line-height: 1.6;
 }
 
+.prayer-wrapper {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap:20px;
+margin-top:20px;
+}
+
+.prayer-box,
+.countdown-box{
+background:#fff;
+padding:20px;
+border-radius:20px;
+box-shadow:0 4px 12px rgba(0,0,0,0.1);
+}
+
+
 /* HERO */
 .hero {
   background: linear-gradient(135deg,#0f766e,#16a34a);
@@ -141,3 +157,4 @@ footer {
     font-size: 2.2rem;
   }
 }
+
