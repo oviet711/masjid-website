@@ -34,19 +34,24 @@
 
     
 <section id="jadwal" class="container">
-    <div class="section-title">🕌 Jadwal Sholat Hari Ini</div>
+    <div class="prayer-wrapper">
 
-    <div class="grid-2">
-        <div class="card">
-            <div id="prayer-times">Memuat jadwal...</div>
-        </div>
-
-        <div class="card highlight">
-            <h3>⏳ Menuju Adzan</h3>
-            <h2 id="next-prayer"></h2>
-            <div id="countdown-timer"></div>
-        </div>
+    <div class="prayer-box">
+    <h3>Jadwal Sholat</h3>
+    <p>Subuh : <span id="subuh"></span></p>
+    <p>Dzuhur : <span id="dzuhur"></span></p>
+    <p>Ashar : <span id="ashar"></span></p>
+    <p>Maghrib : <span id="maghrib"></span></p>
+    <p>Isya : <span id="isya"></span></p>
     </div>
+
+<div class="countdown-box">
+<h3>Menuju Adzan</h3>
+<p id="countdown"></p>
+</div>
+
+</div>
+
 
     <audio id="adzan-audio">
     <source src="/masjid-website/assets/audio/adzan.mp3" type="audio/mpeg">
@@ -106,6 +111,7 @@
 
 </body>
 </html>
+
 
 
 
