@@ -1,29 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-<title>Admin Masjid</title>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard Masjid</title>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-<h2>Tambah Jadwal Pengajian</h2>
-<input id="hari" placeholder="Hari">
-<input id="tema" placeholder="Tema">
-<input id="waktu" placeholder="Waktu">
-<button onclick="saveKajian()">Simpan</button>
 
-<script>
-function saveKajian() {
-    const data = {
-        hari: document.getElementById("hari").value,
-        tema: document.getElementById("tema").value,
-        waktu: document.getElementById("waktu").value
-    };
+<h2>Dashboard Admin Kajian</h2>
 
-    let kajian = JSON.parse(localStorage.getItem("kajian")) || [];
-    kajian.push(data);
-    localStorage.setItem("kajian", JSON.stringify(kajian));
+<div>
+    <input type="text" id="judul" placeholder="Judul Kajian">
+    <input type="date" id="tanggal">
+    <input type="text" id="ustadz" placeholder="Nama Ustadz">
+    <button onclick="tambahKajian()">Tambah Kajian</button>
+</div>
 
-    alert("Tersimpan!");
-}
-</script>
+<table border="1">
+    <thead>
+        <tr>
+            <th>Judul</th>
+            <th>Tanggal</th>
+            <th>Ustadz</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
+    <tbody id="admin-kajian-list"></tbody>
+</table>
+
+<script src="assets/js/admin.js"></script>
+
 </body>
 </html>
