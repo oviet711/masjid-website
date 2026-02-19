@@ -1,37 +1,31 @@
-async function sendMessage() {
+async function sendMessage(){
+    const input=document.getElementById("chat-input");
+    const chatWindow=document.getElementById("chat-window");
 
-    const input = document.getElementById("chat-input").value;
-    const chatWindow = document.getElementById("chat-window");
+    if(!input.value) return;
 
-    chatWindow.innerHTML += "<p><b>Anda:</b> " + input + "</p>";
+    chatWindow.innerHTML+=`<div><b>Anda:</b> ${input.value}</div>`;
 
-    const response = await fetch("https://masjid-chatbot-proxy.oviet711.workers.dev", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer API_KEY",
-            "HTTP-Referer": "https://oviet711.github.io",
-            "X-Title": "Masjid Chatbot"
-        },
-        body: JSON.stringify({
-            model: "mistralai/mistral-7b-instruct",
-            messages: [
-                {
-                    role: "system",
-                    content: "Anda adalah AI Chatbot Masjid yang menjawab dengan sopan, berdasarkan Al-Qur'an dan Hadits, serta menggunakan bahasa Indonesia yang santun."
-                },
-                {
-                    role: "user",
-                    content: input
-                }
-            ]
-        })
-    });
+    const loading=document.createElement("div");
+    loading.innerHTML="<i>AI sedang mengetik...</i>";
+    chatWindow.appendChild(loading);
 
-    const data = await response.json();
-    const reply = data.choices[0].message.content;
+    try{
+        const res=await fetch("YOUR_WORKER_URL",{
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({message:input.value})
+        });
 
-    chatWindow.innerHTML += "<p><b>AI:</b> " + reply + "</p>";
+        const data=await res.json();
+        loading.remove();
+
+        chatWindow.innerHTML+=`<div><b>AI:</b> ${data.choices[0].message.content}</div>`;
+
+    }catch(err){
+        loading.innerHTML="AI tidak tersedia.";
+    }
+
+    input.value="";
+    chatWindow.scrollTop=chatWindow.scrollHeight;
 }
-
-
