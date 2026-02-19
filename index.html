@@ -1,105 +1,94 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Masjid Al-Hikmah</title>
-    <link rel="stylesheet" href="masjid-website/assets/css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Masjid Digital</title>
+<link rel="stylesheet" href="assets/css/style.css">
 </head>
+
 <body>
 
-<header>
-    <h1>Masjid Al-Hikmah</h1>
-    <p>Tempat Ibadah & Cahaya Umat</p>
+<header class="hero">
+    <div class="hero-content">
+        <h1>Masjid Digital</h1>
+        <p>Pusat Ibadah, Ilmu & Dakwah Modern</p>
+        <a href="#donasi" class="btn-primary">Donasi Sekarang</a>
+    </div>
 </header>
 
-<nav>
-    <a href="#jadwal">Jadwal Sholat</a>
-    <a href="#pengajian">Pengajian</a>
-    <a href="#video">Video</a>
+<nav class="navbar">
+    <a href="#jadwal">Jadwal</a>
+    <a href="#kajian">Kajian</a>
+    <a href="#bacaan">Bacaan</a>
+    <a href="#chatbot">AI Chatbot</a>
 </nav>
 
-<section class="container">
-    <h2>🕌 Jadwal Sholat</h2>
+<section id="jadwal" class="container">
+    <div class="section-title">🕌 Jadwal Sholat Hari Ini</div>
+
     <div class="grid-2">
         <div class="card">
             <div id="prayer-times">Memuat jadwal...</div>
         </div>
-        <div class="card">
-            <h3>⏳ Menuju Adzan Berikutnya</h3>
-            <h3 id="next-prayer"></h3>
+
+        <div class="card highlight">
+            <h3>⏳ Menuju Adzan</h3>
+            <h2 id="next-prayer"></h2>
             <div id="countdown-timer"></div>
         </div>
     </div>
 </section>
 
-
-<section id="jadwal">
-    <h2>🕌 Jadwal Sholat Hari Ini</h2>
-    <div id="prayer-times">Memuat jadwal...</div>
-</section>
-
-<section class="container">
-    <h2>📖 Jadwal Pengajian</h2>
+<section id="kajian" class="container">
+    <div class="section-title">📖 Jadwal Kajian</div>
     <div id="kajian-list" class="grid-3"></div>
 </section>
 
-
-<section class="container">
-    <div class="grid-2">
-        <div class="card">
-            <h2>🎥 Kajian Terbaru</h2>
-            <iframe width="100%" height="250"
-                src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                frameborder="0" allowfullscreen>
-            </iframe>
+<section id="bacaan" class="container">
+    <div class="section-title">📰 Bacaan & Artikel Islami</div>
+    <div class="grid-3">
+        <div class="card post">
+            <h3>Keutamaan Sholat Berjamaah</h3>
+            <p>Sholat berjamaah memiliki pahala 27 derajat lebih tinggi...</p>
         </div>
 
-        <div class="card">
-            <h2>💳 Donasi Masjid</h2>
-            <p>Dukung operasional dan kegiatan dakwah.</p>
-            <br>
-            <a href="#" class="btn">Donasi Sekarang</a>
+        <div class="card post">
+            <h3>Keutamaan Sedekah</h3>
+            <p>Sedekah tidak akan mengurangi harta, justru membersihkan jiwa...</p>
+        </div>
+
+        <div class="card post">
+            <h3>Adab Menuntut Ilmu</h3>
+            <p>Menuntut ilmu adalah kewajiban bagi setiap muslim...</p>
         </div>
     </div>
 </section>
 
-
-<section id="countdown">
-    <h2>⏳ Menuju Adzan Berikutnya</h2>
-    <h3 id="next-prayer"></h3>
-    <div id="countdown-timer"></div>
-</section>
-
-<section id="donasi">
-    <h2>💳 Donasi Masjid</h2>
-    <a href="https://link.dana.id/yourlink" class="btn-donate" target="_blank">
-        Donasi Sekarang
-    </a>
-</section>
-
-<section class="container">
-    <div class="card">
+<section id="chatbot" class="container">
+    <div class="card chatbot-card">
         <h2>🤖 AI Chatbot Masjid</h2>
         <div id="chat-window"></div>
-        <div class="chat-container">
-            <input type="text" id="chat-input" placeholder="Tanya seputar Islam...">
-            <button class="btn" onclick="sendMessage()">Kirim</button>
+        <div class="chat-input-area">
+            <input type="text" id="chat-input" placeholder="Tanyakan seputar Islam...">
+            <button onclick="sendMessage()">Kirim</button>
         </div>
     </div>
 </section>
 
+<section id="donasi" class="container center">
+    <h2>Dukung Operasional Masjid</h2>
+    <a href="#" class="btn-primary">Donasi Sekarang</a>
+</section>
 
 <footer>
-    <p>© 2026 Masjid Al-Hikmah</p>
+    © 2026 Masjid Digital
 </footer>
 
-<audio id="adzan-audio" src="masjid-website/assets/audio/adzan.mp3"></audio>
+<audio id="adzan-audio" src="assets/audio/adzan.mp3"></audio>
 
-<script src="masjid-website/assets/js/script.js"></script>
-<script src="masjid-website/assets/js/chatbot.js"></script>
+<script src="assets/js/script.js"></script>
+<script src="assets/js/chatbot.js"></script>
 
 </body>
 </html>
-
