@@ -3,6 +3,55 @@ document.addEventListener("DOMContentLoaded", () => {
     loadKajian();
 });
 
+async function getPrayerTimes() {
+
+let city = "Jakarta";
+
+let url = `https://api.aladhan.com/v1/timingsByCity?city=${city}&country=Indonesia&method=11`;
+
+let res = await fetch(url);
+let data = await res.json();
+let t = data.data.timings;
+
+document.getElementById("subuh").innerText = t.Fajr;
+document.getElementById("dzuhur").innerText = t.Dhuhr;
+document.getElementById("ashar").innerText = t.Asr;
+document.getElementById("maghrib").innerText = t.Maghrib;
+document.getElementById("isya").innerText = t.Isha;
+
+countdownAdzan(t);
+}
+
+function countdownAdzan(t){
+let now = new Date();
+
+let target = new Date();
+let [h,m] = t.Maghrib.split(":");
+
+target.setHours(h);
+target.setMinutes(m);
+target.setSeconds(0);
+
+let diff = target - now;
+
+setInterval(()=>{
+diff -= 1000;
+
+let min = Math.floor(diff/60000);
+let sec = Math.floor((diff%60000)/1000);
+
+document.getElementById("countdown")
+.innerText = `${min}:${sec}`;
+
+if(diff<=0){
+document.getElementById("adzan-audio").play();
+}
+},1000);
+}
+
+getPrayerTimes();
+
+
 async function loadPrayerTimes(){
     try{
         const res = await fetch("https://api.aladhan.com/v1/timingsByCity?city=Jakarta&country=Indonesia&method=2");
@@ -84,3 +133,4 @@ function loadKajian(){
         `;
     });
 }
+
