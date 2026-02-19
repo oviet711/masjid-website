@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Masjid Al-Hikmah</title>
+    <link rel="stylesheet" href="masjid-website/assets/css/style.css">
+</head>
+<body>
+
+<header>
+    <h1>Masjid Al-Hikmah</h1>
+    <p>Tempat Ibadah & Cahaya Umat</p>
+</header>
+
+<nav>
+    <a href="#jadwal">Jadwal Sholat</a>
+    <a href="#pengajian">Pengajian</a>
+    <a href="#video">Video</a>
+</nav>
+
+<section id="jadwal">
+    <h2>🕌 Jadwal Sholat Hari Ini</h2>
+    <div id="prayer-times">Memuat jadwal...</div>
+</section>
+
+<section id="pengajian">
+    <h2>📖 Jadwal Pengajian</h2>
+    <ul id="kajian-list"></ul>
+</section>
+
+<section id="video">
+    <h2>🎥 Kajian Terbaru</h2>
+    <div class="video-container">
+        <iframe width="560" height="315" 
+            src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen>
+        </iframe>
+    </div>
+</section>
+
+<section id="countdown">
+    <h2>⏳ Menuju Adzan Berikutnya</h2>
+    <h3 id="next-prayer"></h3>
+    <div id="countdown-timer"></div>
+</section>
+
+<section id="donasi">
+    <h2>💳 Donasi Masjid</h2>
+    <a href="https://link.dana.id/yourlink" class="btn-donate" target="_blank">
+        Donasi Sekarang
+    </a>
+</section>
+
+<section id="chatbot">
+    <h2>🤖 AI Chatbot Masjid</h2>
+    <div id="chat-window"></div>
+    <input type="text" id="chat-input" placeholder="Tanya tentang Islam...">
+    <button onclick="sendMessage()">Kirim</button>
+</section>
+
+<footer>
+    <p>© 2026 Masjid Al-Hikmah</p>
+</footer>
+
+<audio id="adzan-audio" src="masjid-website/assets/audio/adzan.mp3"></audio>
+
+<script src="masjid-website/assets/js/script.js"></script>
+<script src="masjid-website/assets/js/chatbot.js"></script>
+
+</body>
+</html>
