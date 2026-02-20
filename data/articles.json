@@ -1,14 +1,14 @@
 [
   {
-    "title": "Keutamaan Sholat Berjamaah",
-    "author": "Admin Masjid",
-    "date": "2026-02-01",
-    "content": "Sholat berjamaah memiliki pahala 27 derajat lebih tinggi dibanding sholat sendiri..."
+    "judul":"Keutamaan Sholat Berjamaah",
+    "isi":"Sholat berjamaah lebih utama dibandingkan sholat sendiri dengan 27 derajat. Rasulullah SAW bersabda bahwa sholat berjamaah memiliki keutamaan yang sangat besar dibandingkan sholat sendiri..."
   },
   {
-    "title": "Makna Ikhlas dalam Ibadah",
-    "author": "Admin Masjid",
-    "date": "2026-02-02",
-    "content": "Ikhlas adalah fondasi utama diterimanya amal seorang muslim..."
+    "judul":"Keutamaan Sedekah",
+    "isi":"Sedekah dapat menghapus dosa sebagaimana air memadamkan api. Orang yang bersedekah akan dilipatgandakan pahalanya oleh Allah SWT..."
+  },
+  {
+    "judul":"Menuntut Ilmu Wajib",
+    "isi":"Menuntut ilmu adalah kewajiban bagi setiap muslim. Dengan ilmu seseorang dapat membedakan mana yang benar dan mana yang salah..."
   }
 ]
