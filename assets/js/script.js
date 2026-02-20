@@ -133,14 +133,34 @@ const kajian = [
 {judul:"Akhlak Muslim", ustadz:"Ustadz Rahman"}
 ];
 
-kajian.forEach(k=>{
-list.innerHTML += `
+kajian.forEach((article,index) => {
+
+let shortText = article.isi.substring(0,120);
+
+container.innerHTML += `
 <div class="post-card">
-<h3>${k.judul}</h3>
-<p>Pemateri: ${k.ustadz}</p>
+
+<h3>${article.judul}</h3>
+
+<p id="short-${index}">
+${shortText}...
+</p>
+
+<p id="full-${index}" style="display:none;">
+${article.isi}
+</p>
+
+<button onclick="toggleRead(${index})"
+class="read-btn"
+id="btn-${index}">
+Selengkapnya
+</button>
+
 </div>
 `;
 });
 
+
 }
+
 
