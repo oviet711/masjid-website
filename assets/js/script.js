@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     loadPrayerTimes();
     loadKajian();
+    loadArtikel();
 });
 
 // ================================
@@ -213,6 +214,7 @@ Selengkapnya
 });
 
 }
+
 
 
 
