@@ -1,119 +1,98 @@
 document.addEventListener("DOMContentLoaded", () => {
-    loadPrayerTimes();
-    loadKajian();
-    loadArtikel();
+loadPrayerTimes();
+loadKajian();
+loadArtikel();
 });
 
-// ================================
-// AMBIL JADWAL SHOLAT OTOMATIS
-// ================================
+// =======================
+// JADWAL SHOLAT
+// =======================
 async function loadPrayerTimes(){
 
 try{
 
-const city = "Jakarta";
-
-const res = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${city}&country=Indonesia&method=11`);
+const res = await fetch("https://api.aladhan.com/v1/timingsByCity?city=Jakarta&country=Indonesia&method=11");
 const data = await res.json();
 const t = data.data.timings;
 
-// tampilkan jadwal
-document.getElementById("subuh").innerText = t.Fajr;
-document.getElementById("dzuhur").innerText = t.Dhuhr;
-document.getElementById("ashar").innerText = t.Asr;
-document.getElementById("maghrib").innerText = t.Maghrib;
-document.getElementById("isya").innerText = t.Isha;
+document.getElementById("subuh").innerText = clean(t.Fajr);
+document.getElementById("dzuhur").innerText = clean(t.Dhuhr);
+document.getElementById("ashar").innerText = clean(t.Asr);
+document.getElementById("maghrib").innerText = clean(t.Maghrib);
+document.getElementById("isya").innerText = clean(t.Isha);
 
-// jalankan countdown
 startCountdown(t);
 
 }
 catch(e){
-console.log("Gagal ambil jadwal");
+console.log("Error Jadwal");
 }
 
 }
 
-// ================================
-// HITUNG SHOLAT BERIKUTNYA
-// ================================
+function clean(time){
+return time.split(" ")[0];
+}
+
 function startCountdown(times){
 
-const prayerList = ["Fajr","Dhuhr","Asr","Maghrib","Isha"];
+const list=["Fajr","Dhuhr","Asr","Maghrib","Isha"];
 
-let nextPrayer = "";
-let nextTime = null;
+let nextTime=null;
+let nextPrayer="";
 
-function cleanTime(timeStr){
-return timeStr.split(" ")[0]; // hapus (+07)
-}
+function setNext(){
 
-function updateNextPrayer(){
+let now=new Date();
 
-const now = new Date();
+for(let p of list){
 
-for(let p of prayerList){
+let [h,m]=clean(times[p]).split(":");
 
-let time = cleanTime(times[p]);
+let t=new Date();
+t.setHours(parseInt(h),parseInt(m),0);
 
-let [h,m] = time.split(":");
-
-let prayerDate = new Date();
-
-prayerDate.setHours(parseInt(h),parseInt(m),0);
-
-if(prayerDate > now){
-nextPrayer = p;
-nextTime = prayerDate;
+if(t>now){
+nextTime=t;
+nextPrayer=p;
 break;
 }
 
 }
 
-// jika sudah lewat semua → subuh besok
 if(!nextTime){
 
-let time = cleanTime(times["Fajr"]);
-let [h,m] = time.split(":");
+let [h,m]=clean(times["Fajr"]).split(":");
+nextPrayer="Fajr";
 
-nextPrayer = "Fajr";
-
-nextTime = new Date();
+nextTime=new Date();
 nextTime.setDate(nextTime.getDate()+1);
 nextTime.setHours(parseInt(h),parseInt(m),0);
 
 }
 
-document.getElementById("next-prayer").innerText = nextPrayer;
+document.getElementById("next-prayer").innerText=nextPrayer;
 
 }
 
-updateNextPrayer();
+setNext();
 
-// ================================
-// COUNTDOWN REALTIME
-// ================================
-let adzanPlayed = false;
+let played=false;
 
 setInterval(()=>{
 
-if(!nextTime) return;
+let diff=nextTime-new Date();
 
-let diff = nextTime - new Date();
+let h=Math.floor(diff/1000/60/60);
+let m=Math.floor(diff/1000/60)%60;
+let s=Math.floor(diff/1000)%60;
 
-if(diff < 0) diff = 0;
-
-let h = Math.floor(diff/1000/60/60);
-let m = Math.floor(diff/1000/60)%60;
-let s = Math.floor(diff/1000)%60;
-
-document.getElementById("countdown-timer").innerText =
+document.getElementById("countdown-timer").innerText=
 `${h}j ${m}m ${s}d`;
 
-// bunyi adzan sekali saja
-if(diff === 0 && !adzanPlayed){
+if(diff<=0 && !played){
 document.getElementById("adzan-audio").play();
-adzanPlayed = true;
+played=true;
 setTimeout(()=>location.reload(),60000);
 }
 
@@ -121,91 +100,53 @@ setTimeout(()=>location.reload(),60000);
 
 }
 
-// ================================
-// DATA KAJIAN MASJID
-// ================================
+// =======================
+// KAJIAN
+// =======================
 function loadKajian(){
 
-const list = document.getElementById("kajian-list");
+const list=document.getElementById("kajian-list");
 
-const kajian = [
-{judul:"Tafsir Al-Qur'an", ustadz:"Ustadz Ahmad"},
-{judul:"Fiqih Sholat", ustadz:"Ustadz Yusuf"},
-{judul:"Akhlak Muslim", ustadz:"Ustadz Rahman"}
+const kajian=[
+{judul:"Tafsir Al-Qur'an",ustadz:"Ustadz Ahmad"},
+{judul:"Fiqih Sholat",ustadz:"Ustadz Yusuf"},
+{judul:"Akhlak Muslim",ustadz:"Ustadz Rahman"}
 ];
 
-kajian.forEach((article,index) => {
+kajian.forEach(k=>{
 
-let shortText = article.isi.substring(0,120);
-
-container.innerHTML += `
+list.innerHTML+=`
 <div class="post-card">
-
-<h3>${article.judul}</h3>
-
-<p id="short-${index}">
-${shortText}...
-</p>
-
-<p id="full-${index}" style="display:none;">
-${article.isi}
-</p>
-
-<button onclick="toggleRead(${index})"
-class="read-btn"
-id="btn-${index}">
-Selengkapnya
-</button>
-
+<h3>${k.judul}</h3>
+<p>Pemateri: ${k.ustadz}</p>
 </div>
 `;
+
 });
 
-function toggleRead(id){
-
-let shortText = document.getElementById(`short-${id}`);
-let fullText = document.getElementById(`full-${id}`);
-let btn = document.getElementById(`btn-${id}`);
-
-if(fullText.style.display === "none"){
-    fullText.style.display = "block";
-    shortText.style.display = "none";
-    btn.innerText = "Tutup";
-}
-else{
-    fullText.style.display = "none";
-    shortText.style.display = "block";
-    btn.innerText = "Selengkapnya";
 }
 
-}
-
-}
-
+// =======================
+// ARTIKEL
+// =======================
 function loadArtikel(){
 
 fetch('/masjid-website/data/articles.json')
-.then(res => res.json())
-.then(data => {
+.then(res=>res.json())
+.then(data=>{
 
-const container = document.getElementById("artikel-list");
-container.innerHTML = "";
+const c=document.getElementById("artikel-list");
+c.innerHTML="";
 
-data.forEach((article,index)=>{
+data.forEach((a,i)=>{
 
-let shortText = article.isi.substring(0,120);
+let short=a.isi.substring(0,120);
 
-container.innerHTML += `
+c.innerHTML+=`
 <div class="post-card">
-
-<h3>${article.judul}</h3>
-
-<p>${shortText}...</p>
-
-<a href="post.html?id=${index}" class="read-btn">
-Selengkapnya
-</a>
-
+<h3>${a.judul}</h3>
+<p>${short}...</p>
+<a href="post.html?id=${i}" class="read-btn">Selengkapnya</a>
 </div>
 `;
 
@@ -214,8 +155,3 @@ Selengkapnya
 });
 
 }
-
-
-
-
-
