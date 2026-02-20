@@ -181,5 +181,39 @@ else{
 
 }
 
+function loadArtikel(){
+
+fetch('/masjid-website/data/articles.json')
+.then(res => res.json())
+.then(data => {
+
+const container = document.getElementById("artikel-list");
+container.innerHTML = "";
+
+data.forEach((article,index)=>{
+
+let shortText = article.isi.substring(0,120);
+
+container.innerHTML += `
+<div class="post-card">
+
+<h3>${article.judul}</h3>
+
+<p>${shortText}...</p>
+
+<a href="post.html?id=${index}" class="read-btn">
+Selengkapnya
+</a>
+
+</div>
+`;
+
+});
+
+});
+
+}
+
+
 
 
