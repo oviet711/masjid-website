@@ -160,7 +160,26 @@ Selengkapnya
 `;
 });
 
+function toggleRead(id){
+
+let shortText = document.getElementById(`short-${id}`);
+let fullText = document.getElementById(`full-${id}`);
+let btn = document.getElementById(`btn-${id}`);
+
+if(fullText.style.display === "none"){
+    fullText.style.display = "block";
+    shortText.style.display = "none";
+    btn.innerText = "Tutup";
+}
+else{
+    fullText.style.display = "none";
+    shortText.style.display = "block";
+    btn.innerText = "Selengkapnya";
+}
 
 }
+
+}
+
 
 
