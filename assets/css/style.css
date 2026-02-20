@@ -128,6 +128,25 @@ box-shadow:0 4px 12px rgba(0,0,0,0.1);
   transition: 0.3s;
 }
 
+.read-btn{
+margin-top:10px;
+background:#0aa96e;
+border:none;
+padding:6px 12px;
+color:#fff;
+border-radius:10px;
+cursor:pointer;
+transition:0.3s;
+}
+
+.read-btn:hover{
+background:#087f55;
+  
+#artikel-list p{
+transition: all 0.4s ease;
+}
+}
+
 .btn-primary:hover {
   background: #15803d;
 }
@@ -157,4 +176,5 @@ footer {
     font-size: 2.2rem;
   }
 }
+
 
