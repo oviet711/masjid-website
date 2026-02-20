@@ -40,8 +40,12 @@ function startCountdown(times){
 
 const prayerList = ["Fajr","Dhuhr","Asr","Maghrib","Isha"];
 
-let nextPrayer = null;
+let nextPrayer = "";
 let nextTime = null;
+
+function cleanTime(timeStr){
+return timeStr.split(" ")[0]; // hapus (+07)
+}
 
 function updateNextPrayer(){
 
@@ -49,10 +53,13 @@ const now = new Date();
 
 for(let p of prayerList){
 
-let [h,m] = times[p].split(":");
+let time = cleanTime(times[p]);
+
+let [h,m] = time.split(":");
 
 let prayerDate = new Date();
-prayerDate.setHours(h,m,0);
+
+prayerDate.setHours(parseInt(h),parseInt(m),0);
 
 if(prayerDate > now){
 nextPrayer = p;
@@ -62,15 +69,17 @@ break;
 
 }
 
-// jika sudah lewat semua → ke subuh besok
-if(!nextPrayer){
+// jika sudah lewat semua → subuh besok
+if(!nextTime){
 
-let [h,m] = times["Fajr"].split(":");
+let time = cleanTime(times["Fajr"]);
+let [h,m] = time.split(":");
+
 nextPrayer = "Fajr";
 
 nextTime = new Date();
 nextTime.setDate(nextTime.getDate()+1);
-nextTime.setHours(h,m,0);
+nextTime.setHours(parseInt(h),parseInt(m),0);
 
 }
 
@@ -87,7 +96,11 @@ let adzanPlayed = false;
 
 setInterval(()=>{
 
+if(!nextTime) return;
+
 let diff = nextTime - new Date();
+
+if(diff < 0) diff = 0;
 
 let h = Math.floor(diff/1000/60/60);
 let m = Math.floor(diff/1000/60)%60;
@@ -96,8 +109,8 @@ let s = Math.floor(diff/1000)%60;
 document.getElementById("countdown-timer").innerText =
 `${h}j ${m}m ${s}d`;
 
-// bunyikan adzan sekali saja
-if(diff <= 0 && !adzanPlayed){
+// bunyi adzan sekali saja
+if(diff === 0 && !adzanPlayed){
 document.getElementById("adzan-audio").play();
 adzanPlayed = true;
 setTimeout(()=>location.reload(),60000);
@@ -130,3 +143,4 @@ list.innerHTML += `
 });
 
 }
+
