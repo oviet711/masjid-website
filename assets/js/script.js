@@ -212,7 +212,6 @@ async function generateCalendar(){
 
 const grid = document.getElementById("calendar-grid");
 const header = document.getElementById("calendar-header");
-
 if(!grid) return;
 
 const now = new Date();
@@ -222,33 +221,32 @@ const month = now.getMonth();
 header.innerText =
 now.toLocaleDateString("id-ID",{month:"long",year:"numeric"});
 
-grid.innerHTML = "";
+grid.innerHTML="";
 
-// Nama hari
-const daysName = ["Min","Sen","Sel","Rab","Kam","Jum","Sab"];
-daysName.forEach(d=>{
+// Hari
+const days=["Min","Sen","Sel","Rab","Kam","Jum","Sab"];
+days.forEach(d=>{
 let el=document.createElement("div");
 el.className="calendar-day-name";
 el.innerText=d;
 grid.appendChild(el);
 });
 
-const firstDay = new Date(year, month, 1).getDay();
-const totalDays = new Date(year, month+1, 0).getDate();
+const firstDay=new Date(year,month,1).getDay();
+const totalDays=new Date(year,month+1,0).getDate();
 
-// Offset awal
+// offset
 for(let i=0;i<firstDay;i++){
-let empty=document.createElement("div");
-grid.appendChild(empty);
+grid.appendChild(document.createElement("div"));
 }
 
 for(let day=1;day<=totalDays;day++){
 
+let dateObj=new Date(year,month,day);
 let cell=document.createElement("div");
 cell.className="calendar-cell";
 
-let dateObj=new Date(year,month,day);
-
+// Highlight hari ini
 if(
 day===now.getDate() &&
 month===now.getMonth() &&
@@ -257,28 +255,44 @@ year===now.getFullYear()
 cell.classList.add("today");
 }
 
-// Hijriyah API (per hari)
-let hijriText="";
+// ===================
+// HIJRIYAH (Native)
+// ===================
+let hijri = new Intl.DateTimeFormat("ar-TN-u-ca-islamic",{
+day:"numeric",
+month:"long"
+}).format(dateObj);
 
-try{
-let response=await fetch(`https://api.aladhan.com/v1/gToH?date=${day}-${month+1}-${year}`);
-let result=await response.json();
-if(result.data){
-hijriText=result.data.hijri.day+" "+
-result.data.hijri.month.en;
-}
-}catch(e){
-hijriText="";
-}
-
-// Jawa
+// ===================
+// JAWA (WETON AKURAT)
+// ===================
 const pasaran=["Legi","Pahing","Pon","Wage","Kliwon"];
-const jawaIndex=Math.floor(dateObj.getTime()/86400000)%5;
+const reference=new Date(1970,0,1);
+const diffDays=Math.floor((dateObj-reference)/86400000);
+const jawaIndex=(diffDays+4)%5; 
+// +4 untuk sinkronisasi epoch umum weton
+
+let jawa=pasaran[(jawaIndex+5)%5];
+
+// ===================
+// CINA LUNAR
+// ===================
+let china = new Intl.DateTimeFormat("zh-CN-u-ca-chinese",{
+day:"numeric",
+month:"long"
+}).format(dateObj);
+
+// ===================
+// RENDER
+// ===================
 
 cell.innerHTML=`
-<div class="calendar-date">${day}</div>
-<div class="calendar-hijri">${hijriText}</div>
-<div class="calendar-jawa">${pasaran[jawaIndex]}</div>
+<div class="calendar-main">${day}</div>
+<div class="calendar-sub">
+Hijriyah: ${hijri}<br>
+Jawa: ${jawa}<br>
+Cina: ${china}
+</div>
 `;
 
 grid.appendChild(cell);
@@ -286,4 +300,5 @@ grid.appendChild(cell);
 }
 
 }
+
 
