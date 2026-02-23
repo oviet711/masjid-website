@@ -201,3 +201,89 @@ hours+"j "+minutes+"m "+seconds+"d";
 },1000);
 
 }
+
+/* =========================
+   KALENDER BULANAN
+========================= */
+
+generateCalendar();
+
+async function generateCalendar(){
+
+const grid = document.getElementById("calendar-grid");
+const header = document.getElementById("calendar-header");
+
+if(!grid) return;
+
+const now = new Date();
+const year = now.getFullYear();
+const month = now.getMonth();
+
+header.innerText =
+now.toLocaleDateString("id-ID",{month:"long",year:"numeric"});
+
+grid.innerHTML = "";
+
+// Nama hari
+const daysName = ["Min","Sen","Sel","Rab","Kam","Jum","Sab"];
+daysName.forEach(d=>{
+let el=document.createElement("div");
+el.className="calendar-day-name";
+el.innerText=d;
+grid.appendChild(el);
+});
+
+const firstDay = new Date(year, month, 1).getDay();
+const totalDays = new Date(year, month+1, 0).getDate();
+
+// Offset awal
+for(let i=0;i<firstDay;i++){
+let empty=document.createElement("div");
+grid.appendChild(empty);
+}
+
+for(let day=1;day<=totalDays;day++){
+
+let cell=document.createElement("div");
+cell.className="calendar-cell";
+
+let dateObj=new Date(year,month,day);
+
+if(
+day===now.getDate() &&
+month===now.getMonth() &&
+year===now.getFullYear()
+){
+cell.classList.add("today");
+}
+
+// Hijriyah API (per hari)
+let hijriText="";
+
+try{
+let response=await fetch(`https://api.aladhan.com/v1/gToH?date=${day}-${month+1}-${year}`);
+let result=await response.json();
+if(result.data){
+hijriText=result.data.hijri.day+" "+
+result.data.hijri.month.en;
+}
+}catch(e){
+hijriText="";
+}
+
+// Jawa
+const pasaran=["Legi","Pahing","Pon","Wage","Kliwon"];
+const jawaIndex=Math.floor(dateObj.getTime()/86400000)%5;
+
+cell.innerHTML=`
+<div class="calendar-date">${day}</div>
+<div class="calendar-hijri">${hijriText}</div>
+<div class="calendar-jawa">${pasaran[jawaIndex]}</div>
+`;
+
+grid.appendChild(cell);
+
+}
+
+}
+
