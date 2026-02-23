@@ -159,3 +159,77 @@ padding:40px;
 margin-top:100px;
 }
 
+/* =========================
+   KALENDER BULANAN
+========================= */
+
+.calendar-header{
+text-align:center;
+font-weight:600;
+margin-bottom:20px;
+font-size:1.2rem;
+color:#065f46;
+}
+
+.calendar-grid{
+display:grid;
+grid-template-columns:repeat(7,1fr);
+gap:10px;
+}
+
+.calendar-day-name{
+text-align:center;
+font-weight:600;
+padding:10px 0;
+color:#047857;
+}
+
+.calendar-cell{
+background:linear-gradient(145deg,#ffffff,#f0fdf4);
+border-radius:14px;
+padding:10px;
+min-height:100px;
+box-shadow:0 4px 10px rgba(0,0,0,0.05);
+transition:0.3s;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+}
+
+.calendar-cell:hover{
+transform:translateY(-3px);
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
+}
+
+.calendar-date{
+font-weight:700;
+color:#064e3b;
+}
+
+.calendar-hijri{
+font-size:0.8rem;
+color:#6b7280;
+}
+
+.calendar-jawa{
+font-size:0.75rem;
+color:#9ca3af;
+}
+
+.today{
+background:linear-gradient(145deg,#16a34a,#065f46);
+color:white;
+}
+
+.today .calendar-date,
+.today .calendar-hijri,
+.today .calendar-jawa{
+color:white;
+}
+
+@media(max-width:768px){
+.calendar-grid{
+grid-template-columns:repeat(2,1fr);
+}
+}
+
