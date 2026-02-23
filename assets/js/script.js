@@ -15,17 +15,12 @@ const artikelData = [
 {
 judul: "Keutamaan Sholat Berjamaah",
 tanggal: "23 Februari 2026",
-isi: "Sholat berjamaah memiliki keutamaan 27 derajat dibanding sholat sendiri. Selain pahala berlipat, sholat berjamaah juga mempererat ukhuwah antar sesama muslim dan menjadi simbol persatuan umat Islam."
+isi: "Sholat berjamaah memiliki keutamaan 27 derajat dibanding sholat sendiri..."
 },
 {
 judul: "Makna Ikhlas dalam Ibadah",
 tanggal: "22 Februari 2026",
-isi: "Ikhlas adalah memurnikan niat hanya karena Allah SWT. Tanpa keikhlasan, amal tidak bernilai. Seorang muslim harus senantiasa memperbaiki niatnya dalam setiap ibadah."
-},
-{
-judul: "Keutamaan Membaca Al-Qur'an",
-tanggal: "21 Februari 2026",
-isi: "Setiap huruf yang dibaca dari Al-Qur'an akan mendapat sepuluh kebaikan. Selain pahala, Al-Qur'an adalah petunjuk hidup dan penenang hati bagi orang-orang beriman."
+isi: "Ikhlas adalah memurnikan niat hanya karena Allah SWT..."
 }
 ];
 
@@ -37,40 +32,11 @@ artikelData.forEach(post => {
 let card = document.createElement("div");
 card.className = "card";
 
-let title = document.createElement("h3");
-title.className = "post-title";
-title.innerText = post.judul;
-
-let meta = document.createElement("p");
-meta.className = "post-meta";
-meta.innerText = post.tanggal;
-
-let content = document.createElement("p");
-content.className = "post-content";
-
-let fullText = post.isi;
-let shortText = fullText.substring(0,120) + "...";
-
-content.innerText = shortText;
-
-let btn = document.createElement("button");
-btn.className = "read-btn";
-btn.innerText = "Selengkapnya";
-
-btn.addEventListener("click", function(){
-if(content.innerText === shortText){
-content.innerText = fullText;
-btn.innerText = "Tutup";
-}else{
-content.innerText = shortText;
-btn.innerText = "Selengkapnya";
-}
-});
-
-card.appendChild(title);
-card.appendChild(meta);
-card.appendChild(content);
-card.appendChild(btn);
+card.innerHTML = `
+<h3 class="post-title">${post.judul}</h3>
+<p class="post-meta">${post.tanggal}</p>
+<p class="post-content">${post.isi.substring(0,120)}...</p>
+`;
 
 container.appendChild(card);
 
@@ -79,54 +45,122 @@ container.appendChild(card);
 }
 
 /* =========================
-   JADWAL SHOLAT + COUNTDOWN
+   JADWAL SHOLAT OTOMATIS
 ========================= */
 
 function initJadwalSholat(){
 
-const jadwal = {
-subuh: "04:45",
-dzuhur: "12:05",
-ashar: "15:20",
-maghrib: "18:15",
-isya: "19:30"
-};
+if(!navigator.geolocation){
+alert("Browser tidak mendukung geolocation");
+return;
+}
 
-document.getElementById("subuh").innerText = jadwal.subuh;
-document.getElementById("dzuhur").innerText = jadwal.dzuhur;
-document.getElementById("ashar").innerText = jadwal.ashar;
-document.getElementById("maghrib").innerText = jadwal.maghrib;
-document.getElementById("isya").innerText = jadwal.isya;
+navigator.geolocation.getCurrentPosition(async function(position){
 
-updateCountdown(jadwal);
-setInterval(() => updateCountdown(jadwal), 1000);
+const lat = position.coords.latitude;
+const lon = position.coords.longitude;
+
+const todayKey = new Date().toISOString().split("T")[0];
+const cache = localStorage.getItem("jadwal-"+todayKey);
+
+let data;
+
+if(cache){
+data = JSON.parse(cache);
+}else{
+
+const response = await fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=2`);
+const result = await response.json();
+
+data = result.data;
+localStorage.setItem("jadwal-"+todayKey, JSON.stringify(data));
 
 }
+
+renderJadwal(data.timings);
+renderTanggal(data);
+updateCountdown(data.timings);
+setInterval(() => updateCountdown(data.timings), 1000);
+
+}, function(){
+alert("Lokasi ditolak. Tidak bisa menampilkan jadwal otomatis.");
+});
+
+}
+
+function renderJadwal(jadwal){
+
+document.getElementById("subuh").innerText = jadwal.Fajr;
+document.getElementById("dzuhur").innerText = jadwal.Dhuhr;
+document.getElementById("ashar").innerText = jadwal.Asr;
+document.getElementById("maghrib").innerText = jadwal.Maghrib;
+document.getElementById("isya").innerText = jadwal.Isha;
+
+}
+
+/* =========================
+   TANGGAL
+========================= */
+
+function renderTanggal(data){
+
+// Nasional
+const now = new Date();
+const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+document.getElementById("tanggal-nasional").innerText =
+"Tanggal: " + now.toLocaleDateString('id-ID', options);
+
+// Hijriyah dari API
+document.getElementById("tanggal-hijriyah").innerText =
+"Hijriyah: " + data.date.hijri.day + " " +
+data.date.hijri.month.en + " " +
+data.date.hijri.year + " H";
+
+// Jawa sederhana (weton 5 pasaran)
+const pasaran = ["Legi","Pahing","Pon","Wage","Kliwon"];
+const jawaIndex = Math.floor(now.getTime() / 86400000) % 5;
+
+document.getElementById("tanggal-jawa").innerText =
+"Jawa: " + pasaran[jawaIndex];
+
+}
+
+/* =========================
+   COUNTDOWN
+========================= */
 
 function updateCountdown(jadwal){
 
 const now = new Date();
-const times = [];
+const prayerNames = {
+Fajr: "Subuh",
+Dhuhr: "Dzuhur",
+Asr: "Ashar",
+Maghrib: "Maghrib",
+Isha: "Isya"
+};
+
+let nextPrayer = null;
 
 for(let key in jadwal){
+
 let [hour, minute] = jadwal[key].split(":");
 let prayerTime = new Date();
 prayerTime.setHours(hour, minute, 0);
 
 if(prayerTime > now){
-times.push({name:key, time:prayerTime});
-}
-}
-
-if(times.length === 0){
-return;
+nextPrayer = {name:key, time:prayerTime};
+break;
 }
 
-const next = times[0];
+}
 
-document.getElementById("next-prayer").innerText = next.name;
+if(!nextPrayer) return;
 
-let diff = next.time - now;
+document.getElementById("next-prayer").innerText =
+prayerNames[nextPrayer.name];
+
+let diff = nextPrayer.time - now;
 
 let hours = Math.floor(diff / 1000 / 60 / 60);
 let minutes = Math.floor(diff / 1000 / 60) % 60;
