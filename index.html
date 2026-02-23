@@ -1,26 +1,16 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Masjid Digital</title>
-
-<link rel="stylesheet" href="assets/css/style.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
-
-</head>
-
-<body>
-<!DOCTYPE html>
-<html lang="id">
-<head>
   <meta charset="UTF-8">
-  <title>Kalender 4 Sistem</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Masjid Digital</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<div class="calendar-container">
+<h1>Masjid Digital</h1>
+
+<!-- ===== KALENDER ===== -->
+<section>
   <div class="calendar-header">
     <button id="prevMonth">⟨</button>
     <h2 id="monthTitle"></h2>
@@ -28,129 +18,18 @@
   </div>
 
   <div class="calendar-grid" id="calendar"></div>
-</div>
-
-<script src="script.js"></script>
-</body>
-</html>
-
-  
-<header class="hero">
-<div class="hero-content">
-<h1>Masjid Digital</h1>
-<p>Pusat Ibadah, Ilmu & Dakwah Modern</p>
-<a href="#donasi" class="btn-primary">Donasi Sekarang</a>
-</div>
-</header>
-
-<nav class="navbar">
-<a href="#jadwal">Jadwal</a>
-<a href="#kajian">Kajian</a>
-<a href="#bacaan">Bacaan</a>
-<a href="#chatbot">AI Chatbot</a>
-</nav>
-
-<!-- ========================= -->
-<!-- JADWAL SHOLAT -->
-<!-- ========================= -->
-<section id="jadwal" class="container">
-  <div class="calendar-container">
-   <div class="calendar-header">
-    <button id="prevMonth">⟨</button>
-    <h2 id="monthTitle"></h2>
-    <button id="nextMonth">⟩</button>
-  </div>
-
-  <div class="calendar-grid" id="calendar"></div>
-
-</div>
 </section>
 
-<div class="date-info">
-  <p id="tanggal-nasional"></p>
-  <p id="tanggal-hijriyah"></p>
-  <p id="tanggal-jawa"></p>
-  <p id="lokasi-user"></p>
-</div>
-
-<div class="prayer-wrapper">
-
-<div class="prayer-box">
-<h3>Jadwal Sholat</h3>
-<p>Subuh : <span id="subuh"></span></p>
-<p>Dzuhur : <span id="dzuhur"></span></p>
-<p>Ashar : <span id="ashar"></span></p>
-<p>Maghrib : <span id="maghrib"></span></p>
-<p>Isya : <span id="isya"></span></p>
-</div>
-
-<div class="countdown-box">
-<h3>Menuju Sholat: <span id="next-prayer"></span></h3>
-<p id="countdown-timer"></p>
-</div>
-
-</div>
-
+<!-- ===== JADWAL SHOLAT ===== -->
+<section class="prayer-container">
+  <h2>Jadwal Sholat</h2>
+  <div id="prayerTimes"></div>
+  <h3 id="countdown"></h3>
 </section>
 
-<!-- ========================= -->
-<!-- AUDIO ADZAN -->
-<!-- ========================= -->
-<audio id="adzan-audio">
-<source src="/masjid-website/assets/audio/adzan.mp3" type="audio/mpeg">
-</audio>
-
-<!-- ========================= -->
-<!-- KAJIAN -->
-<!-- ========================= -->
-<section id="kajian" class="container">
-<div class="section-title">📖 Jadwal Kajian</div>
-<div id="kajian-list" class="grid-3"></div>
-</section>
-
-<!-- ========================= -->
-<!-- ARTIKEL DINAMIS -->
-<!-- ========================= -->
-<section id="bacaan" class="container">
-<div class="section-title">📰 Bacaan & Artikel Islami</div>
-<div id="artikel-list" class="artikel-grid"></div>
-</section>
-
-<!-- ========================= -->
-<!-- CHATBOT -->
-<!-- ========================= -->
-<section id="chatbot" class="container">
-<div class="card chatbot-card">
-<h2>🤖 AI Chatbot Masjid</h2>
-<div id="chat-window"></div>
-<div class="chat-input-area">
-<input type="text" id="chat-input" placeholder="Tanyakan seputar Islam...">
-<button onclick="sendMessage()">Kirim</button>
-</div>
-</div>
-</section>
-
-<!-- ========================= -->
-<!-- DONASI -->
-<!-- ========================= -->
-<section id="donasi" class="container center">
-<h2>Dukung Operasional Masjid</h2>
-<a href="#" class="btn-primary">Donasi Sekarang</a>
-</section>
-
-<footer>
-© 2026 Masjid Digital
-</footer>
-
-<!-- ========================= -->
-<!-- SCRIPT -->
-<!-- ========================= -->
-<script src="assets/js/script.js"></script>
-<script src="assets/js/chatbot.js"></script>
+<script src="js/hijri-converter.js"></script>
+<script src="js/calendar.js"></script>
+<script src="js/prayer.js"></script>
 
 </body>
 </html>
-
-
-
-
