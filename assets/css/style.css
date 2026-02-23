@@ -164,54 +164,59 @@ margin-top:100px;
    KALENDER SPIRITUAL 4-IN-1
 ========================= */
 
-.calendar-grid{
-display:grid;
-grid-template-columns:repeat(7,1fr);
-gap:14px;
+.calendar-container {
+  max-width: 1200px;
+  margin: auto;
+  font-family: Arial, sans-serif;
 }
 
-.calendar-cell{
-background:linear-gradient(145deg,#fffef8,#f0fdf4);
-border:2px solid #d1fae5;
-border-radius:18px;
-padding:12px;
-min-height:120px;
-box-shadow:0 6px 18px rgba(0,0,0,0.06);
-display:flex;
-flex-direction:column;
-justify-content:space-between;
-transition:0.3s;
-position:relative;
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
 }
 
-.calendar-cell:hover{
-transform:translateY(-4px);
-box-shadow:0 12px 28px rgba(0,0,0,0.1);
-border-color:#16a34a;
+.calendar-header button {
+  font-size: 20px;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 8px;
+  border: none;
+  background: #1e3a8a;
+  color: white;
 }
 
-.calendar-main{
-font-weight:700;
-font-size:1.1rem;
-color:#064e3b;
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
 }
 
-.calendar-sub{
-font-size:0.75rem;
-color:#475569;
-line-height:1.3;
+.calendar-day {
+  aspect-ratio: 1 / 1;   /* INI YANG MEMBUAT PERSEGI */
+  border-radius: 12px;
+  border: 2px solid #1e3a8a;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  overflow: hidden;
+  font-size: 11px;
+  font-weight: bold;
 }
 
-.today{
-background:linear-gradient(145deg,#16a34a,#064e3b);
-color:white;
-border:2px solid gold;
+/* Kuadran */
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ddd;
 }
 
-.today .calendar-main,
-.today .calendar-sub{
-color:white;
-}
+.masehi { background: #dbeafe; }
+.jawa { background: #fef3c7; }
+.hijriah { background: #dcfce7; }
+.cina { background: #fce7f3; }
 
 
 
