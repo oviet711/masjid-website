@@ -41,6 +41,16 @@ border-radius:20px;
 box-shadow:0 4px 12px rgba(0,0,0,0.1);
 }
 
+.date-info{
+margin-bottom:20px;
+background:#ffffff;
+padding:15px 20px;
+border-radius:15px;
+box-shadow:0 4px 12px rgba(0,0,0,0.06);
+font-size:0.95rem;
+color:#334155;
+}
+
 .hero{
 background:linear-gradient(135deg,#0f766e,#16a34a);
 padding:120px 20px;
@@ -148,3 +158,4 @@ text-align:center;
 padding:40px;
 margin-top:100px;
 }
+
