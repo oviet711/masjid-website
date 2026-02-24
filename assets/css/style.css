@@ -1,0 +1,67 @@
+body {
+  font-family: Arial;
+  margin: 20px;
+  background: #f4f6f9;
+}
+
+nav a {
+  margin-right: 15px;
+  text-decoration: none;
+  font-weight: bold;
+  color: darkgreen;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  align-items: center;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+}
+
+.calendar-day {
+  aspect-ratio: 1/1;
+  border: 2px solid green;
+  border-radius: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.masehi { background: #dbeafe; }
+.jawa { background: #fef3c7; }
+.hijri { background: #dcfce7; }
+.cina { background: #fce7f3; }
+
+.prayer-container {
+  margin-top: 30px;
+  padding: 15px;
+  background: white;
+  border-radius: 10px;
+}
+
+#map {
+  height: 400px;
+  margin-top: 20px;
+  border-radius: 10px;
+}
+
+.materi-card {
+  background: white;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
