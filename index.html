@@ -3,174 +3,190 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Masjid Digital Production</title>
+<title>Website Kalender & Kontak</title>
 
 <style>
-body{margin:0;font-family:Segoe UI,sans-serif;background:#f4f8f5;color:#1c3b2f}
-header{background:#198754;color:white;padding:15px 5%;display:flex;justify-content:space-between;align-items:center}
-nav a{color:white;margin-left:20px;text-decoration:none}
-section{padding:60px 5%}
-h2{border-left:6px solid #c9a227;padding-left:10px}
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
 
-/* CALENDAR */
-.calendar-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.calendar-header button{background:#198754;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer}
-.calendar-container{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;max-width:1100px;margin:auto}
-.day-header{text-align:center;font-weight:bold;font-size:12px}
-.calendar-box{background:white;border:1px solid #d4af37;border-radius:8px;padding:6px;font-size:10px;min-height:160px}
-.calendar-box.today{background:#d1e7dd;border:2px solid #198754}
-.masehi{font-weight:bold;font-size:14px}
-.hijri{color:#8b5e00}
-.jawa{color:#6c757d}
-.cina{font-size:10px;color:#444}
+/* =======================
+   NAVIGATION MENU
+======================= */
+nav {
+    background: #b30000;
+    padding: 10px;
+}
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+}
+nav ul li {
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
 
-/* KONTAK & PETA */
-.contact-map{display:grid;grid-template-columns:1fr 1fr;gap:30px}
-.contact-box, .map-box{background:white;padding:20px;border-radius:12px;box-shadow:0 4px 10px rgba(0,0,0,.05)}
-.map-box iframe{width:100%;height:220px;border:0;border-radius:10px}
+/* =======================
+   CONTENT
+======================= */
+.container {
+    padding: 20px;
+}
 
-@media(max-width:900px){
-.contact-map{grid-template-columns:1fr}
-.calendar-box{min-height:180px}
+/* =======================
+   CALENDAR BOX
+======================= */
+.calendar-box {
+    background: #f5f5f5;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.calendar-box h2 {
+    margin-top: 0;
+}
+
+.calendar-item {
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+/* =======================
+   CONTACT + MAP SECTION
+======================= */
+.contact-map {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.contact-info {
+    flex: 1;
+    min-width: 280px;
+}
+
+.map-box {
+    flex: 1;
+    min-width: 280px;
+    max-width: 400px;
+}
+
+.map-box iframe {
+    width: 100%;
+    height: 250px;
+    border-radius: 8px;
+}
+
+/* =======================
+   FOOTER
+======================= */
+footer {
+    background: #222;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    margin-top: 40px;
 }
 </style>
 </head>
 <body>
 
-<header>
-<div><strong>Masjid Digital</strong></div>
+<!-- =======================
+     MENU KATEGORI
+======================= -->
 <nav>
-<a href="#kalender">Kalender</a>
-<a href="#kontak">Kontak</a>
+    <ul>
+        <li>Beranda</li>
+        <li>Profil</li>
+        <li>Produk</li>
+        <li>Kategori</li>
+        <li>Kontak</li>
+    </ul>
 </nav>
-</header>
 
-<section id="kalender">
-<h2>Kalender 4 Sistem</h2>
+<div class="container">
 
-<div class="calendar-header">
-<button onclick="changeMonth(-1)">◀</button>
-<div id="monthYear"></div>
-<button onclick="changeMonth(1)">▶</button>
+    <!-- =======================
+         KALENDER SECTION
+    ======================= -->
+    <div class="calendar-box">
+        <h2>Kalender Hari Ini</h2>
+
+        <div class="calendar-item" id="masehi"></div>
+        <div class="calendar-item" id="china"></div>
+    </div>
+
+    <!-- =======================
+         CONTACT + MAP
+    ======================= -->
+    <div class="contact-map">
+        <div class="contact-info">
+            <h2>Info Kontak</h2>
+            <p><strong>Alamat:</strong> Jakarta, Indonesia</p>
+            <p><strong>Telepon:</strong> 0812-3456-7890</p>
+            <p><strong>Email:</strong> info@email.com</p>
+        </div>
+
+        <div class="map-box">
+            <iframe 
+                src="https://www.google.com/maps?q=jakarta&output=embed">
+            </iframe>
+        </div>
+    </div>
+
 </div>
 
-<div class="calendar-container" id="calendar"></div>
-</section>
-
-<section id="kontak">
-<h2>Kontak & Lokasi</h2>
-
-<div class="contact-map">
-
-<div class="contact-box">
-<p><strong>Email:</strong> info@masjid.com</p>
-<p><strong>Telepon:</strong> 0812-xxxx-xxxx</p>
-<p><strong>Alamat:</strong> Jakarta, Indonesia</p>
-</div>
-
-<div class="map-box">
-<iframe src="https://maps.google.com/maps?q=jakarta&output=embed"></iframe>
-</div>
-
-</div>
-</section>
+<footer>
+    © 2026 Website Anda
+</footer>
 
 <script>
-let currentDate=new Date();
+/* ===========================
+   KALENDER MASEHI
+=========================== */
+const today = new Date();
 
-/* ================= HIJRI ================= */
-function getHijri(date){
-try{
-return new Intl.DateTimeFormat(
-'id-TN-u-ca-islamic',
-{day:'numeric',month:'short',year:'numeric'}
-).format(date);
-}catch(e){return "-";}
+const optionsMasehi = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+};
+
+const masehiFormatter = new Intl.DateTimeFormat('id-ID', optionsMasehi);
+document.getElementById("masehi").innerHTML =
+    "<strong>Masehi:</strong> " + masehiFormatter.format(today);
+
+/* ===========================
+   KALENDER CHINA (LUNAR)
+=========================== */
+
+try {
+    const optionsChina = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        calendar: 'chinese'
+    };
+
+    const chinaFormatter = new Intl.DateTimeFormat('zh-CN-u-ca-chinese', optionsChina);
+
+    document.getElementById("china").innerHTML =
+        "<strong>Kalender Cina:</strong> " + chinaFormatter.format(today);
+
+} catch (error) {
+    document.getElementById("china").innerHTML =
+        "<strong>Kalender Cina:</strong> Browser belum mendukung.";
 }
-
-/* ================= JAWA ================= */
-function getJawa(date){
-const hari=["Ahad","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
-const pasaran=["Legi","Pahing","Pon","Wage","Kliwon"];
-const epoch=new Date(1970,0,1);
-const diff=Math.floor((date-epoch)/86400000);
-return hari[date.getDay()]+" "+pasaran[(diff+4)%5];
-}
-
-/* ================= CINA LENGKAP ================= */
-const stems=["Jia","Yi","Bing","Ding","Wu","Ji","Geng","Xin","Ren","Gui"];
-const elements=["Kayu","Kayu","Api","Api","Tanah","Tanah","Logam","Logam","Air","Air"];
-const branches=["Zi","Chou","Yin","Mao","Chen","Si","Wu","Wei","Shen","You","Xu","Hai"];
-const animals=["Tikus","Kerbau","Macan","Kelinci","Naga","Ular","Kuda","Kambing","Monyet","Ayam","Anjing","Babi"];
-const lunarMonths=["Zheng Yue","Er Yue","San Yue","Si Yue","Wu Yue","Liu Yue","Qi Yue","Ba Yue","Jiu Yue","Shi Yue","Shiyi Yue","Shier Yue"];
-
-function getCina(date){
-try{
-let parts=new Intl.DateTimeFormat('zh-CN-u-ca-chinese',
-{year:'numeric',month:'numeric',day:'numeric'}).formatToParts(date);
-
-let lunarYear=parseInt(parts.find(p=>p.type==="year").value);
-let lunarMonth=parseInt(parts.find(p=>p.type==="month").value);
-let lunarDay=parseInt(parts.find(p=>p.type==="day").value);
-
-let stemIndex=(lunarYear-4)%10;
-let branchIndex=(lunarYear-4)%12;
-if(stemIndex<0) stemIndex+=10;
-if(branchIndex<0) branchIndex+=12;
-
-let dayStem=(lunarDay-1)%10;
-let dayBranch=(lunarDay-1)%12;
-
-return `
-Tahun: ${animals[branchIndex]} (${elements[stemIndex]})<br>
-Bulan: ${lunarMonths[lunarMonth-1] || lunarMonth}<br>
-Hari: ${stems[dayStem]} ${branches[dayBranch]}
-`;
-}catch(e){
-return "-";
-}
-}
-
-/* ================= RENDER ================= */
-function renderCalendar(){
-const cal=document.getElementById("calendar");
-cal.innerHTML="";
-let year=currentDate.getFullYear();
-let month=currentDate.getMonth();
-
-document.getElementById("monthYear").innerText=
-currentDate.toLocaleString("id-ID",{month:"long",year:"numeric"});
-
-let firstDay=new Date(year,month,1);
-let lastDay=new Date(year,month+1,0);
-
-["Ah","Sn","Sl","Rb","Km","Jm","Sb"].forEach(h=>{
-let d=document.createElement("div");
-d.className="day-header";
-d.innerText=h;
-cal.appendChild(d);
-});
-
-for(let i=0;i<firstDay.getDay();i++) cal.appendChild(document.createElement("div"));
-
-for(let d=1;d<=lastDay.getDate();d++){
-let date=new Date(year,month,d);
-let box=document.createElement("div");
-box.className="calendar-box";
-if(date.toDateString()===new Date().toDateString()) box.classList.add("today");
-
-box.innerHTML=`
-<div class="masehi">${d}</div>
-<div class="hijri">${getHijri(date)}</div>
-<div class="jawa">${getJawa(date)}</div>
-<div class="cina">${getCina(date)}</div>
-`;
-cal.appendChild(box);
-}
-}
-
-renderCalendar();
-function changeMonth(s){currentDate.setMonth(currentDate.getMonth()+s);renderCalendar();}
 </script>
 
 </body>
