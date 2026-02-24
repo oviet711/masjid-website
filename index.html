@@ -214,7 +214,11 @@ calendar.appendChild(document.createElement("div"));
 
 for(let d=1;d<=lastDay.getDate();d++){
 let date=new Date(year,month,d);
-let hijri=new Intl.DateTimeFormat('id-TN-u-ca-islamic',{day:'numeric'}).format(date);
+let hijriFull = new Intl.DateTimeFormat('id-TN-u-ca-islamic',{
+    day:'numeric',
+    month:'long',
+    year:'numeric'
+}).format(date);
 let box=document.createElement("div");
 box.className="calendar-box";
 if(date.toDateString()===new Date().toDateString()){
@@ -222,7 +226,7 @@ box.classList.add("today");
 }
 box.innerHTML=`
 <div class="masehi">${d}</div>
-<div class="hijri">${hijri} H</div>
+<div class="hijri">${hijriFull}</div>
 <div class="jawa">${getJavaneseDay(date)}</div>
 <div class="cina">${getChineseZodiac(year)}</div>
 `;
@@ -297,3 +301,4 @@ fetchPrayer(lat,lon);
 
 </body>
 </html>
+
