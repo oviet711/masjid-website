@@ -2,42 +2,220 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Masjid Digital - Al-Muttaqin</title>
-<link rel="stylesheet" href="assets/css/style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Masjid Al-Muttaqin</title>
+
+<style>
+body{
+    font-family: 'Segoe UI', sans-serif;
+    margin:0;
+    background:#f4f8f5;
+    color:#1c3b2f;
+}
+
+header{
+    background:linear-gradient(90deg,#0f5132,#198754);
+    color:white;
+    padding:20px;
+    text-align:center;
+    font-size:22px;
+    font-weight:bold;
+    letter-spacing:1px;
+}
+
+section{
+    padding:30px 5%;
+}
+
+h2{
+    border-left:6px solid #c9a227;
+    padding-left:10px;
+    margin-bottom:20px;
+}
+
+/* ===== KALENDER ===== */
+.calendar-container{
+    display:grid;
+    grid-template-columns: repeat(7,1fr);
+    gap:5px;
+    max-width:900px;
+    margin:auto;
+}
+
+.calendar-box{
+    background:white;
+    border:1px solid #d4af37;
+    border-radius:8px;
+    padding:5px;
+    font-size:11px;
+    min-height:75px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+}
+
+.calendar-box .masehi{
+    font-weight:bold;
+    font-size:14px;
+    color:#14532d;
+}
+
+.calendar-box .hijri{
+    color:#8b5e00;
+}
+
+.calendar-box .jawa{
+    color:#6c757d;
+}
+
+.calendar-box .cina{
+    color:#b02a37;
+}
+
+.day-header{
+    text-align:center;
+    font-weight:bold;
+    font-size:12px;
+}
+
+/* ===== POST GRID ===== */
+.post-section{
+    margin-top:40px;
+}
+
+.post-grid{
+    display:grid;
+    grid-template-columns: repeat(4,1fr);
+    gap:20px;
+}
+
+.post-card{
+    background:white;
+    border-radius:10px;
+    border:1px solid #e2e8f0;
+    padding:15px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.05);
+    transition:0.3s;
+}
+
+.post-card:hover{
+    transform:translateY(-5px);
+}
+
+.post-card h4{
+    margin:0 0 10px 0;
+    font-size:16px;
+}
+
+.post-card p{
+    font-size:13px;
+    color:#555;
+}
+
+@media(max-width:900px){
+    .post-grid{
+        grid-template-columns: repeat(2,1fr);
+    }
+}
+
+@media(max-width:600px){
+    .post-grid{
+        grid-template-columns:1fr;
+    }
+}
+</style>
 </head>
 <body>
 
-<nav>
-  <a href="index.html">Beranda</a>
-  <a href="materi.html">Materi</a>
-  <a href="kontak.html">Kontak</a>
-</nav>
-
-<h1>Masjid Digital</h1>
+<header>
+Masjid Al-Muttaqin — Jakarta Barat
+</header>
 
 <section>
-  <div class="calendar-header">
-    <button id="prevMonth">⟨</button>
-    <h2 id="monthTitle"></h2>
-    <button id="nextMonth">⟩</button>
-  </div>
-  <div class="calendar-grid" id="calendar"></div>
+<h2>Kalender Bulan Ini</h2>
+<div class="calendar-container" id="calendar"></div>
 </section>
 
-<section class="prayer-container">
-  <h2>Jadwal Sholat</h2>
-  <div id="prayerTimes"></div>
-  <h3 id="countdown"></h3>
+<section class="post-section">
+<h2>Kajian</h2>
+<div class="post-grid">
+<div class="post-card"><h4>Tafsir Al-Fatihah</h4><p>Pemahaman makna ayat pembuka Al-Qur'an.</p></div>
+<div class="post-card"><h4>Fiqih Sholat</h4><p>Tata cara sholat sesuai sunnah Nabi ﷺ.</p></div>
+<div class="post-card"><h4>Aqidah Dasar</h4><p>Memahami rukun iman dan tauhid.</p></div>
+<div class="post-card"><h4>Akhlak Muslim</h4><p>Adab dan etika dalam kehidupan sehari-hari.</p></div>
+</div>
+
+<h2>Info</h2>
+<div class="post-grid">
+<div class="post-card"><h4>Jadwal Kajian Pekanan</h4><p>Setiap Sabtu ba'da Maghrib.</p></div>
+<div class="post-card"><h4>Bakti Sosial</h4><p>Kegiatan santunan bulanan.</p></div>
+<div class="post-card"><h4>Donasi Pembangunan</h4><p>Program renovasi ruang wudhu.</p></div>
+<div class="post-card"><h4>Pengumuman Ramadhan</h4><p>Jadwal imsakiyah dan tarawih.</p></div>
+</div>
+
+<h2>Materi</h2>
+<div class="post-grid">
+<div class="post-card"><h4>Iqro 1</h4><p>Pembelajaran huruf hijaiyah dasar.</p></div>
+<div class="post-card"><h4>Tajwid Dasar</h4><p>Hukum bacaan nun mati dan mim mati.</p></div>
+<div class="post-card"><h4>Doa Harian</h4><p>Kumpulan doa sehari-hari.</p></div>
+<div class="post-card"><h4>Dzikir Pagi Petang</h4><p>Panduan dzikir sesuai sunnah.</p></div>
+</div>
 </section>
 
-<link rel="stylesheet" href="assets/css/style.css">
-<script src="assets/js/config.js"></script>
-<script src="assets/js/jawa.js"></script>
-<script src="assets/js/hijri.js"></script>
-<script src="assets/js/chinese.js"></script>
-<script src="assets/js/calendar.js"></script>
-<script src="assets/js/prayer.js"></script>
-<script src="assets/js/countdown.js"></script>
+<script>
+function getJavaneseDay(date){
+    const days=["Legi","Pahing","Pon","Wage","Kliwon"];
+    return days[Math.floor((date/86400000)%5)];
+}
+
+function getChineseDay(date){
+    const animals=["Tikus","Kerbau","Macan","Kelinci","Naga","Ular","Kuda","Kambing","Monyet","Ayam","Anjing","Babi"];
+    return animals[date.getFullYear()%12];
+}
+
+function renderCalendar(){
+    const calendar=document.getElementById("calendar");
+    const now=new Date();
+    const year=now.getFullYear();
+    const month=now.getMonth();
+
+    const firstDay=new Date(year,month,1);
+    const lastDay=new Date(year,month+1,0);
+
+    const dayNames=["Ahad","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+    const dayNamesArab=["الأحد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
+    const dayNamesCina=["日","一","二","三","四","五","六"];
+
+    for(let i=0;i<7;i++){
+        let div=document.createElement("div");
+        div.className="day-header";
+        div.innerHTML=dayNames[i]+"<br>"+dayNamesArab[i]+"<br>"+dayNamesCina[i];
+        calendar.appendChild(div);
+    }
+
+    for(let i=0;i<firstDay.getDay();i++){
+        calendar.appendChild(document.createElement("div"));
+    }
+
+    for(let d=1;d<=lastDay.getDate();d++){
+        let date=new Date(year,month,d);
+
+        let hijri=new Intl.DateTimeFormat('id-TN-u-ca-islamic',{day:'numeric'}).format(date);
+
+        let box=document.createElement("div");
+        box.className="calendar-box";
+        box.innerHTML=`
+            <div class="masehi">${d}</div>
+            <div class="hijri">${hijri} H</div>
+            <div class="jawa">${getJavaneseDay(date)}</div>
+            <div class="cina">${getChineseDay(date)}</div>
+        `;
+        calendar.appendChild(box);
+    }
+}
+
+renderCalendar();
+</script>
 
 </body>
 </html>
