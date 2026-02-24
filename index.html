@@ -5,14 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Masjid Al-Muttaqin</title>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 <style>
 body{
-    font-family: 'Segoe UI', sans-serif;
+    font-family:'Segoe UI',sans-serif;
     margin:0;
     background:#f4f8f5;
     color:#1c3b2f;
 }
-
 header{
     background:linear-gradient(90deg,#0f5132,#198754);
     color:white;
@@ -20,28 +22,39 @@ header{
     text-align:center;
     font-size:22px;
     font-weight:bold;
-    letter-spacing:1px;
 }
-
-section{
-    padding:30px 5%;
-}
+section{ padding:30px 5%; }
 
 h2{
     border-left:6px solid #c9a227;
     padding-left:10px;
-    margin-bottom:20px;
 }
 
-/* ===== KALENDER ===== */
+.calendar-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
+}
+.calendar-header button{
+    background:#198754;
+    color:white;
+    border:none;
+    padding:6px 12px;
+    border-radius:6px;
+    cursor:pointer;
+}
+.calendar-header button:hover{
+    background:#145c32;
+}
+
 .calendar-container{
     display:grid;
-    grid-template-columns: repeat(7,1fr);
+    grid-template-columns:repeat(7,1fr);
     gap:5px;
     max-width:900px;
     margin:auto;
 }
-
 .calendar-box{
     background:white;
     border:1px solid #d4af37;
@@ -49,28 +62,18 @@ h2{
     padding:5px;
     font-size:11px;
     min-height:75px;
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
 }
-
+.calendar-box.today{
+    background:#d1e7dd;
+    border:2px solid #198754;
+}
 .calendar-box .masehi{
     font-weight:bold;
     font-size:14px;
-    color:#14532d;
 }
-
-.calendar-box .hijri{
-    color:#8b5e00;
-}
-
-.calendar-box .jawa{
-    color:#6c757d;
-}
-
-.calendar-box .cina{
-    color:#b02a37;
-}
+.calendar-box .hijri{ color:#8b5e00; }
+.calendar-box .jawa{ color:#6c757d; }
+.calendar-box .cina{ color:#b02a37; }
 
 .day-header{
     text-align:center;
@@ -78,50 +81,40 @@ h2{
     font-size:12px;
 }
 
-/* ===== POST GRID ===== */
-.post-section{
-    margin-top:40px;
+/* SHOLAT */
+.prayer-box{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.05);
+    max-width:500px;
+    margin:auto;
+}
+.countdown{
+    font-size:18px;
+    font-weight:bold;
+    color:#198754;
 }
 
+/* POST GRID */
 .post-grid{
     display:grid;
-    grid-template-columns: repeat(4,1fr);
+    grid-template-columns:repeat(4,1fr);
     gap:20px;
 }
-
 .post-card{
     background:white;
     border-radius:10px;
-    border:1px solid #e2e8f0;
     padding:15px;
     box-shadow:0 4px 10px rgba(0,0,0,0.05);
-    transition:0.3s;
 }
-
-.post-card:hover{
-    transform:translateY(-5px);
-}
-
-.post-card h4{
-    margin:0 0 10px 0;
-    font-size:16px;
-}
-
-.post-card p{
-    font-size:13px;
-    color:#555;
-}
+.post-card h4{ margin:0 0 10px 0; }
 
 @media(max-width:900px){
-    .post-grid{
-        grid-template-columns: repeat(2,1fr);
-    }
+    .post-grid{ grid-template-columns:repeat(2,1fr); }
 }
-
 @media(max-width:600px){
-    .post-grid{
-        grid-template-columns:1fr;
-    }
+    .post-grid{ grid-template-columns:1fr; }
 }
 </style>
 </head>
@@ -132,89 +125,174 @@ Masjid Al-Muttaqin — Jakarta Barat
 </header>
 
 <section>
-<h2>Kalender Bulan Ini</h2>
+<h2>Kalender</h2>
+
+<div class="calendar-header">
+<button onclick="changeMonth(-1)">◀</button>
+<div id="monthYear"></div>
+<button onclick="changeMonth(1)">▶</button>
+</div>
+
+<div id="calendarArea">
 <div class="calendar-container" id="calendar"></div>
+</div>
+
+<br>
+<button onclick="exportPDF()">Export PDF</button>
 </section>
 
-<section class="post-section">
+<section>
+<h2>Jadwal Sholat</h2>
+<div class="prayer-box">
+<div id="locationInfo">Mendeteksi lokasi...</div>
+<div id="prayerTimes"></div>
+<div class="countdown" id="countdown"></div>
+</div>
+</section>
+
+<section>
 <h2>Kajian</h2>
 <div class="post-grid">
-<div class="post-card"><h4>Tafsir Al-Fatihah</h4><p>Pemahaman makna ayat pembuka Al-Qur'an.</p></div>
-<div class="post-card"><h4>Fiqih Sholat</h4><p>Tata cara sholat sesuai sunnah Nabi ﷺ.</p></div>
-<div class="post-card"><h4>Aqidah Dasar</h4><p>Memahami rukun iman dan tauhid.</p></div>
-<div class="post-card"><h4>Akhlak Muslim</h4><p>Adab dan etika dalam kehidupan sehari-hari.</p></div>
+<div class="post-card"><h4>Tafsir Al-Fatihah</h4></div>
+<div class="post-card"><h4>Fiqih Sholat</h4></div>
+<div class="post-card"><h4>Aqidah Dasar</h4></div>
+<div class="post-card"><h4>Akhlak Muslim</h4></div>
 </div>
 
 <h2>Info</h2>
 <div class="post-grid">
-<div class="post-card"><h4>Jadwal Kajian Pekanan</h4><p>Setiap Sabtu ba'da Maghrib.</p></div>
-<div class="post-card"><h4>Bakti Sosial</h4><p>Kegiatan santunan bulanan.</p></div>
-<div class="post-card"><h4>Donasi Pembangunan</h4><p>Program renovasi ruang wudhu.</p></div>
-<div class="post-card"><h4>Pengumuman Ramadhan</h4><p>Jadwal imsakiyah dan tarawih.</p></div>
+<div class="post-card"><h4>Jadwal Kajian Pekanan</h4></div>
+<div class="post-card"><h4>Bakti Sosial</h4></div>
+<div class="post-card"><h4>Donasi Masjid</h4></div>
+<div class="post-card"><h4>Info Ramadhan</h4></div>
 </div>
 
 <h2>Materi</h2>
 <div class="post-grid">
-<div class="post-card"><h4>Iqro 1</h4><p>Pembelajaran huruf hijaiyah dasar.</p></div>
-<div class="post-card"><h4>Tajwid Dasar</h4><p>Hukum bacaan nun mati dan mim mati.</p></div>
-<div class="post-card"><h4>Doa Harian</h4><p>Kumpulan doa sehari-hari.</p></div>
-<div class="post-card"><h4>Dzikir Pagi Petang</h4><p>Panduan dzikir sesuai sunnah.</p></div>
+<div class="post-card"><h4>Iqro 1</h4></div>
+<div class="post-card"><h4>Tajwid Dasar</h4></div>
+<div class="post-card"><h4>Doa Harian</h4></div>
+<div class="post-card"><h4>Dzikir</h4></div>
 </div>
 </section>
 
 <script>
-function getJavaneseDay(date){
-    const days=["Legi","Pahing","Pon","Wage","Kliwon"];
-    return days[Math.floor((date/86400000)%5)];
-}
+let currentDate=new Date();
 
-function getChineseDay(date){
-    const animals=["Tikus","Kerbau","Macan","Kelinci","Naga","Ular","Kuda","Kambing","Monyet","Ayam","Anjing","Babi"];
-    return animals[date.getFullYear()%12];
+function getJavaneseDay(date){
+const pasaran=["Legi","Pahing","Pon","Wage","Kliwon"];
+return pasaran[Math.floor((date/86400000)%5)];
+}
+function getChineseZodiac(year){
+const animals=["Tikus","Kerbau","Macan","Kelinci","Naga","Ular","Kuda","Kambing","Monyet","Ayam","Anjing","Babi"];
+return animals[year%12];
 }
 
 function renderCalendar(){
-    const calendar=document.getElementById("calendar");
-    const now=new Date();
-    const year=now.getFullYear();
-    const month=now.getMonth();
+const calendar=document.getElementById("calendar");
+calendar.innerHTML="";
+let year=currentDate.getFullYear();
+let month=currentDate.getMonth();
 
-    const firstDay=new Date(year,month,1);
-    const lastDay=new Date(year,month+1,0);
+document.getElementById("monthYear").innerText=
+currentDate.toLocaleString('id-ID',{month:'long',year:'numeric'});
 
-    const dayNames=["Ahad","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
-    const dayNamesArab=["الأحد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
-    const dayNamesCina=["日","一","二","三","四","五","六"];
+const firstDay=new Date(year,month,1);
+const lastDay=new Date(year,month+1,0);
 
-    for(let i=0;i<7;i++){
-        let div=document.createElement("div");
-        div.className="day-header";
-        div.innerHTML=dayNames[i]+"<br>"+dayNamesArab[i]+"<br>"+dayNamesCina[i];
-        calendar.appendChild(div);
-    }
+const dayNames=["Ahad","Sen","Sel","Rab","Kam","Jum","Sab"];
+for(let i=0;i<7;i++){
+let div=document.createElement("div");
+div.className="day-header";
+div.innerText=dayNames[i];
+calendar.appendChild(div);
+}
 
-    for(let i=0;i<firstDay.getDay();i++){
-        calendar.appendChild(document.createElement("div"));
-    }
+for(let i=0;i<firstDay.getDay();i++){
+calendar.appendChild(document.createElement("div"));
+}
 
-    for(let d=1;d<=lastDay.getDate();d++){
-        let date=new Date(year,month,d);
+for(let d=1;d<=lastDay.getDate();d++){
+let date=new Date(year,month,d);
+let hijri=new Intl.DateTimeFormat('id-TN-u-ca-islamic',{day:'numeric'}).format(date);
+let box=document.createElement("div");
+box.className="calendar-box";
+if(date.toDateString()===new Date().toDateString()){
+box.classList.add("today");
+}
+box.innerHTML=`
+<div class="masehi">${d}</div>
+<div class="hijri">${hijri} H</div>
+<div class="jawa">${getJavaneseDay(date)}</div>
+<div class="cina">${getChineseZodiac(year)}</div>
+`;
+calendar.appendChild(box);
+}
+}
 
-        let hijri=new Intl.DateTimeFormat('id-TN-u-ca-islamic',{day:'numeric'}).format(date);
-
-        let box=document.createElement("div");
-        box.className="calendar-box";
-        box.innerHTML=`
-            <div class="masehi">${d}</div>
-            <div class="hijri">${hijri} H</div>
-            <div class="jawa">${getJavaneseDay(date)}</div>
-            <div class="cina">${getChineseDay(date)}</div>
-        `;
-        calendar.appendChild(box);
-    }
+function changeMonth(step){
+currentDate.setMonth(currentDate.getMonth()+step);
+renderCalendar();
 }
 
 renderCalendar();
+
+/* EXPORT PDF */
+async function exportPDF(){
+const {jsPDF}=window.jspdf;
+let canvas=await html2canvas(document.getElementById("calendarArea"));
+let imgData=canvas.toDataURL("image/png");
+let pdf=new jsPDF();
+pdf.addImage(imgData,'PNG',10,10,180,0);
+pdf.save("kalender-masjid.pdf");
+}
+
+/* SHOLAT */
+function fetchPrayer(lat,lon){
+fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=2`)
+.then(res=>res.json())
+.then(data=>{
+let times=data.data.timings;
+document.getElementById("prayerTimes").innerHTML=`
+Subuh: ${times.Fajr}<br>
+Dzuhur: ${times.Dhuhr}<br>
+Ashar: ${times.Asr}<br>
+Maghrib: ${times.Maghrib}<br>
+Isya: ${times.Isha}
+`;
+startCountdown(times);
+});
+}
+
+function startCountdown(times){
+let prayerOrder=["Fajr","Dhuhr","Asr","Maghrib","Isha"];
+function update(){
+let now=new Date();
+for(let p of prayerOrder){
+let [h,m]=times[p].split(":");
+let prayerTime=new Date();
+prayerTime.setHours(h,m,0);
+if(prayerTime>now){
+let diff=(prayerTime-now)/1000;
+let hr=Math.floor(diff/3600);
+let min=Math.floor((diff%3600)/60);
+let sec=Math.floor(diff%60);
+document.getElementById("countdown").innerText=
+"Menuju "+p+" : "+hr+"j "+min+"m "+sec+"d";
+return;
+}
+}
+}
+setInterval(update,1000);
+}
+
+navigator.geolocation.getCurrentPosition(pos=>{
+let lat=pos.coords.latitude;
+let lon=pos.coords.longitude;
+document.getElementById("locationInfo").innerText=
+"Lokasi terdeteksi otomatis";
+fetchPrayer(lat,lon);
+});
 </script>
 
 </body>
