@@ -183,9 +183,62 @@ function getJavaneseDay(date){
 const pasaran=["Legi","Pahing","Pon","Wage","Kliwon"];
 return pasaran[Math.floor((date/86400000)%5)];
 }
-function getChineseZodiac(year){
-const animals=["Tikus","Kerbau","Macan","Kelinci","Naga","Ular","Kuda","Kambing","Monyet","Ayam","Anjing","Babi"];
-return animals[year%12];
+function getChineseCalendar(date){
+
+    const stems = [
+        {name:"Jia", element:"Kayu"},
+        {name:"Yi", element:"Kayu"},
+        {name:"Bing", element:"Api"},
+        {name:"Ding", element:"Api"},
+        {name:"Wu", element:"Tanah"},
+        {name:"Ji", element:"Tanah"},
+        {name:"Geng", element:"Logam"},
+        {name:"Xin", element:"Logam"},
+        {name:"Ren", element:"Air"},
+        {name:"Gui", element:"Air"}
+    ];
+
+    const branches = [
+        "Tikus","Kerbau","Macan","Kelinci",
+        "Naga","Ular","Kuda","Kambing",
+        "Monyet","Ayam","Anjing","Babi"
+    ];
+
+    const lunarParts = new Intl.DateTimeFormat(
+        'zh-CN-u-ca-chinese',
+        { year:'numeric', month:'numeric', day:'numeric' }
+    ).formatToParts(date);
+
+    let lunarYear = parseInt(lunarParts.find(p=>p.type==="year").value);
+    let lunarMonth = parseInt(lunarParts.find(p=>p.type==="month").value);
+    let lunarDay = parseInt(lunarParts.find(p=>p.type==="day").value);
+
+    // Tahun Imlek (Era Huangdi)
+    let imlekYear = date.getFullYear() + 2697;
+
+    // Hitung siklus 60 tahun
+    let stemIndex = (lunarYear - 4) % 10;
+    let branchIndex = (lunarYear - 4) % 12;
+
+    let stem = stems[stemIndex];
+    let branch = branches[branchIndex];
+
+    const monthNames = [
+        "Zheng Yue","Er Yue","San Yue","Si Yue",
+        "Wu Yue","Liu Yue","Qi Yue","Ba Yue",
+        "Jiu Yue","Shi Yue","Shiyi Yue","Shier Yue"
+    ];
+
+    return {
+        imlek: imlekYear,
+        stem: stem.name,
+        element: stem.element,
+        shio: branch,
+        month: lunarMonth,
+        monthName: monthNames[lunarMonth-1],
+        day: lunarDay
+    };
+}
 }
 
 function renderCalendar(){
@@ -224,11 +277,18 @@ box.className="calendar-box";
 if(date.toDateString()===new Date().toDateString()){
 box.classList.add("today");
 }
+let chinese = getChineseCalendar(date);
+
 box.innerHTML=`
 <div class="masehi">${d}</div>
 <div class="hijri">${hijriFull}</div>
 <div class="jawa">${getJavaneseDay(date)}</div>
-<div class="cina">${getChineseZodiac(year)}</div>
+<div class="cina">
+Imlek ${chinese.imlek}<br>
+${chinese.stem} (${chinese.element}) ${chinese.shio}<br>
+Bulan ${chinese.month} (${chinese.monthName})<br>
+Hari ${chinese.day}
+</div>
 `;
 calendar.appendChild(box);
 }
@@ -301,4 +361,5 @@ fetchPrayer(lat,lon);
 
 </body>
 </html>
+
 
