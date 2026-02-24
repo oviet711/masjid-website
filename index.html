@@ -3,157 +3,114 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Masjid Digital Stabil</title>
+<title>Masjid Digital Production</title>
 
 <style>
-body{
-font-family:Arial, sans-serif;
-margin:0;
-background:#f4f8f5;
-color:#1c3b2f
-}
-header{
-background:#198754;
-color:white;
-padding:20px;
-text-align:center;
-font-size:22px;
-font-weight:bold
-}
+body{font-family:Segoe UI,sans-serif;margin:0;background:#f4f8f5;color:#1c3b2f}
+header{background:#198754;color:white;padding:20px;text-align:center;font-weight:bold;font-size:22px}
 section{padding:40px 5%}
-h2{
-border-left:6px solid #c9a227;
-padding-left:10px
-}
-
-/* POST GRID */
-.post-grid{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:20px;
-margin-top:20px
-}
-.post-card{
-background:white;
-padding:20px;
-border-radius:10px;
-box-shadow:0 4px 8px rgba(0,0,0,.05)
-}
-.post-category{
-font-size:12px;
-color:#c9a227;
-font-weight:bold
-}
-.post-title{
-font-weight:bold;
-margin:5px 0
-}
-.post-desc{
-font-size:14px;
-color:#555
-}
+h2{border-left:6px solid #c9a227;padding-left:10px}
 
 /* CALENDAR */
-.calendar-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:10px
-}
-.calendar-header button{
-background:#198754;
-color:white;
-border:none;
-padding:6px 14px;
-border-radius:6px;
-cursor:pointer
-}
-.calendar-container{
-display:grid;
-grid-template-columns:repeat(7,1fr);
-gap:6px;
-max-width:1100px;
-margin:auto
-}
-.day-header{
-text-align:center;
-font-weight:bold;
-font-size:12px
-}
-.calendar-box{
-background:white;
-border:1px solid #d4af37;
-border-radius:8px;
-padding:6px;
-font-size:11px;
-min-height:80px
-}
-.calendar-box.today{
-background:#d1e7dd;
-border:2px solid #198754
-}
-.masehi{
-font-weight:bold;
-font-size:14px
-}
-.subtext{
-font-size:10px;
-color:#555
-}
+.calendar-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.calendar-header button{background:#198754;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer}
+.calendar-container{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;max-width:1100px;margin:auto}
+.day-header{text-align:center;font-weight:bold;font-size:12px}
+.calendar-box{background:white;border:1px solid #d4af37;border-radius:8px;padding:6px;font-size:10px;min-height:100px}
+.calendar-box.today{background:#d1e7dd;border:2px solid #198754}
+.masehi{font-weight:bold;font-size:14px}
+.hijri{color:#8b5e00}
+.jawa{color:#6c757d}
+.cina{font-weight:bold}
 
-@media(max-width:900px){
-.post-grid{grid-template-columns:repeat(2,1fr)}
-}
-@media(max-width:600px){
-.post-grid{grid-template-columns:1fr}
-}
+/* SHOLAT */
+.prayer-box{background:white;padding:20px;border-radius:12px;max-width:500px;margin:auto;box-shadow:0 4px 12px rgba(0,0,0,.05)}
+.prayer-item{display:flex;justify-content:space-between;padding:4px 0}
+.highlight-fasting{background:#fff3cd;font-weight:bold}
+.toggle-box{margin-bottom:10px}
 </style>
 </head>
 <body>
 
-<header>Masjid Digital Ultra Stabil</header>
+<header>Masjid Digital Production</header>
 
 <section>
-<h2>Kajian</h2>
-<div class="post-grid">
-<div class="post-card"><div class="post-category">Kajian</div><div class="post-title">Fiqih</div><div class="post-desc">Kajian rutin fiqih.</div></div>
-<div class="post-card"><div class="post-category">Kajian</div><div class="post-title">Tafsir</div><div class="post-desc">Tafsir Al-Qur'an.</div></div>
-<div class="post-card"><div class="post-category">Kajian</div><div class="post-title">Hadits</div><div class="post-desc">Kajian hadits shahih.</div></div>
-<div class="post-card"><div class="post-category">Kajian</div><div class="post-title">Aqidah</div><div class="post-desc">Penguatan tauhid.</div></div>
-</div>
-</section>
-
-<section>
-<h2>Kalender Bulan Ini</h2>
-
+<h2>Kalender 4 Sistem</h2>
 <div class="calendar-header">
 <button onclick="changeMonth(-1)">◀</button>
 <div id="monthYear"></div>
 <button onclick="changeMonth(1)">▶</button>
 </div>
-
 <div class="calendar-container" id="calendar"></div>
+</section>
 
+<section>
+<h2>Jadwal Sholat (Kemenag RI)</h2>
+<div class="prayer-box">
+
+<div class="toggle-box">
+<label>
+<input type="checkbox" id="geoToggle">
+ Aktifkan Deteksi Lokasi Otomatis
+</label>
+</div>
+
+<div id="locationInfo">Mode default (tanpa lokasi)</div>
+<div id="prayerTimes"></div>
+
+</div>
 </section>
 
 <script>
 let currentDate=new Date();
 
-/* JAWA */
+/* ================= JAWA ================= */
 function getJawa(date){
 const hari=["Ahad","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
 const pasaran=["Legi","Pahing","Pon","Wage","Kliwon"];
 return hari[date.getDay()]+" "+pasaran[Math.floor(date.getTime()/86400000)%5];
 }
 
-/* CINA SEDERHANA */
+/* ================= CINA LENGKAP ================= */
 function getCina(date){
+
+const stems=[
+{name:"Jia",elemen:"Kayu"},
+{name:"Yi",elemen:"Kayu"},
+{name:"Bing",elemen:"Api"},
+{name:"Ding",elemen:"Api"},
+{name:"Wu",elemen:"Tanah"},
+{name:"Ji",elemen:"Tanah"},
+{name:"Geng",elemen:"Logam"},
+{name:"Xin",elemen:"Logam"},
+{name:"Ren",elemen:"Air"},
+{name:"Gui",elemen:"Air"}
+];
+
 const animals=["Tikus","Kerbau","Macan","Kelinci","Naga","Ular","Kuda","Kambing","Monyet","Ayam","Anjing","Babi"];
+
 let year=date.getFullYear();
-return animals[(year-4)%12];
+let stemIndex=(year-4)%10;
+let branchIndex=(year-4)%12;
+if(stemIndex<0) stemIndex+=10;
+if(branchIndex<0) branchIndex+=12;
+
+return animals[branchIndex]+" ("+stems[stemIndex].elemen+")";
 }
 
-/* RENDER */
+/* ================= HIJRI SAFE ================= */
+function getHijri(date){
+try{
+return new Intl.DateTimeFormat(
+'id-TN-u-ca-islamic',
+{day:'numeric',month:'short',year:'numeric'}
+).format(date);
+}catch(e){
+return "-";
+}
+}
+
+/* ================= RENDER ================= */
 function renderCalendar(){
 
 const calendar=document.getElementById("calendar");
@@ -163,7 +120,7 @@ let year=currentDate.getFullYear();
 let month=currentDate.getMonth();
 
 document.getElementById("monthYear").innerText=
-currentDate.toLocaleString("id-ID",{month:"long",year:"numeric"});
+currentDate.toLocaleString('id-ID',{month:'long',year:'numeric'});
 
 let firstDay=new Date(year,month,1);
 let lastDay=new Date(year,month+1,0);
@@ -186,26 +143,74 @@ let date=new Date(year,month,d);
 let box=document.createElement("div");
 box.className="calendar-box";
 
-if(date.toDateString()===new Date().toDateString()){
+if(date.toDateString()===new Date().toDateString())
 box.classList.add("today");
-}
 
 box.innerHTML=`
 <div class="masehi">${d}</div>
-<div class="subtext">${getJawa(date)}</div>
-<div class="subtext">Shio ${getCina(date)}</div>
+<div class="hijri">${getHijri(date)}</div>
+<div class="jawa">${getJawa(date)}</div>
+<div class="cina">${getCina(date)}</div>
 `;
 
 calendar.appendChild(box);
 }
 }
+renderCalendar();
 
 function changeMonth(step){
 currentDate.setMonth(currentDate.getMonth()+step);
 renderCalendar();
 }
 
-renderCalendar();
+/* ================= SHOLAT ================= */
+
+const DEFAULT_LAT=-6.2;  // Jakarta default
+const DEFAULT_LON=106.8;
+
+document.getElementById("geoToggle").addEventListener("change",function(){
+if(this.checked){
+if(navigator.geolocation){
+navigator.geolocation.getCurrentPosition(
+pos=>{
+document.getElementById("locationInfo").innerText="Lokasi terdeteksi otomatis";
+fetchPrayer(pos.coords.latitude,pos.coords.longitude);
+},
+()=>{
+document.getElementById("locationInfo").innerText="Izin lokasi ditolak";
+fetchPrayer(DEFAULT_LAT,DEFAULT_LON);
+}
+);
+}else{
+fetchPrayer(DEFAULT_LAT,DEFAULT_LON);
+}
+}else{
+document.getElementById("locationInfo").innerText="Mode default (Jakarta)";
+fetchPrayer(DEFAULT_LAT,DEFAULT_LON);
+}
+});
+
+function fetchPrayer(lat,lon){
+fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=11`)
+.then(res=>res.json())
+.then(data=>displayPrayer(data.data.timings))
+.catch(()=>document.getElementById("locationInfo").innerText="Gagal mengambil jadwal");
+}
+
+function displayPrayer(times){
+let container=document.getElementById("prayerTimes");
+container.innerHTML="";
+["Imsak","Fajr","Dhuhr","Asr","Maghrib","Isha"].forEach(p=>{
+let div=document.createElement("div");
+div.className="prayer-item";
+if(p==="Fajr"||p==="Maghrib")div.classList.add("highlight-fasting");
+div.innerHTML=`<span>${p}</span><span>${times[p]}</span>`;
+container.appendChild(div);
+});
+}
+
+/* default load */
+fetchPrayer(DEFAULT_LAT,DEFAULT_LON);
 </script>
 
 </body>
