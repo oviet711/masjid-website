@@ -3,219 +3,249 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Masjid Digital</title>
+<title>Masjid Digital Production</title>
 
 <style>
-body{
-    font-family:Segoe UI,sans-serif;
-    margin:0;
-    background:#f4f8f5;
-    color:#1c3b2f;
-}
-header{
-    background:linear-gradient(90deg,#0f5132,#198754);
-    color:white;
-    padding:20px;
-    text-align:center;
-    font-weight:bold;
-}
-section{padding:30px 5%;}
-h2{border-left:6px solid #c9a227;padding-left:10px;}
+body{font-family:Segoe UI,sans-serif;margin:0;background:#f4f8f5;color:#1c3b2f}
+header{background:linear-gradient(90deg,#0f5132,#198754);color:white;padding:20px;text-align:center;font-weight:bold}
+section{padding:30px 5%}
+h2{border-left:6px solid #c9a227;padding-left:10px}
 
-.calendar-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:10px;
-}
-.calendar-header button{
-    background:#198754;
-    color:white;
-    border:none;
-    padding:6px 12px;
-    border-radius:6px;
-    cursor:pointer;
-}
-.calendar-container{
-    display:grid;
-    grid-template-columns:repeat(7,1fr);
-    gap:5px;
-    max-width:1000px;
-    margin:auto;
-}
-.calendar-box{
-    background:white;
-    border:1px solid #d4af37;
-    border-radius:8px;
-    padding:5px;
-    font-size:10px;
-    min-height:90px;
-}
-.calendar-box.today{
-    background:#d1e7dd;
-    border:2px solid #198754;
-}
-.day-header{
-    text-align:center;
-    font-weight:bold;
-    font-size:11px;
-}
-.masehi{font-weight:bold;font-size:13px;}
-.hijri{color:#8b5e00;}
-.jawa{color:#6c757d;}
-.cina{color:#b02a37;}
+.calendar-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.calendar-header button{background:#198754;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer}
+
+.calendar-container{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;max-width:1100px;margin:auto}
+.calendar-box{background:white;border:1px solid #d4af37;border-radius:8px;padding:4px;font-size:9px;min-height:85px}
+.calendar-box.today{background:#d1e7dd;border:2px solid #198754}
+.day-header{text-align:center;font-weight:bold;font-size:11px}
+
+.masehi{font-weight:bold;font-size:13px}
+.hijri{color:#8b5e00}
+.jawa{color:#6c757d}
+.cina{font-weight:bold}
+
+.elemen-Api{color:#dc3545}
+.elemen-Air{color:#0d6efd}
+.elemen-Kayu{color:#198754}
+.elemen-Tanah{color:#c9a227}
+.elemen-Logam{color:#6c757d}
+
+/* SHOLAT */
+.prayer-box{background:white;padding:20px;border-radius:10px;max-width:500px;margin:auto;box-shadow:0 4px 10px rgba(0,0,0,.05)}
+.prayer-item{display:flex;justify-content:space-between;padding:4px 0}
+.highlight-fasting{background:#fff3cd;font-weight:bold}
+.countdown{margin-top:10px;font-weight:bold;color:#198754}
 </style>
 </head>
 <body>
 
-<header>Masjid Digital</header>
+<header>Masjid Digital Production Grade</header>
 
 <section>
 <h2>Kalender 4 Sistem</h2>
-
 <div class="calendar-header">
 <button onclick="changeMonth(-1)">◀</button>
 <div id="monthYear"></div>
 <button onclick="changeMonth(1)">▶</button>
 </div>
-
 <div class="calendar-container" id="calendar"></div>
 </section>
 
+<section>
+<h2>Jadwal Sholat (Kemenag RI)</h2>
+<div class="prayer-box">
+<div id="locationInfo">Mendeteksi lokasi...</div>
+<div id="prayerTimes"></div>
+<div class="countdown" id="countdown"></div>
+</div>
+</section>
+
 <script>
-let currentDate = new Date();
+let currentDate=new Date();
 
-/* ========================= */
-/* ===== FUNGSI JAWA ======= */
-/* ========================= */
-function getJavanese(date){
-    const days = ["Ahad","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
-    const pasaran = ["Legi","Pahing","Pon","Wage","Kliwon"];
-    let dayName = days[date.getDay()];
-    let pasaranName = pasaran[Math.floor(date.getTime()/86400000)%5];
-    return dayName + " " + pasaranName;
+/* ===================== */
+/* ====== JAWA ========= */
+/* ===================== */
+function getJawa(date){
+const hari=["Ahad","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+const pasaran=["Legi","Pahing","Pon","Wage","Kliwon"];
+return hari[date.getDay()]+" "+pasaran[Math.floor(date.getTime()/86400000)%5];
 }
 
-/* ========================= */
-/* ===== FUNGSI CINA ======= */
-/* ========================= */
-function getChinese(date){
+/* ===================== */
+/* ====== CINA ========= */
+/* ===================== */
+function getCina(date){
 
-    const stems = [
-        {name:"Jia", element:"Kayu"},
-        {name:"Yi", element:"Kayu"},
-        {name:"Bing", element:"Api"},
-        {name:"Ding", element:"Api"},
-        {name:"Wu", element:"Tanah"},
-        {name:"Ji", element:"Tanah"},
-        {name:"Geng", element:"Logam"},
-        {name:"Xin", element:"Logam"},
-        {name:"Ren", element:"Air"},
-        {name:"Gui", element:"Air"}
-    ];
+const stems=[
+{name:"Jia",elemen:"Kayu"},
+{name:"Yi",elemen:"Kayu"},
+{name:"Bing",elemen:"Api"},
+{name:"Ding",elemen:"Api"},
+{name:"Wu",elemen:"Tanah"},
+{name:"Ji",elemen:"Tanah"},
+{name:"Geng",elemen:"Logam"},
+{name:"Xin",elemen:"Logam"},
+{name:"Ren",elemen:"Air"},
+{name:"Gui",elemen:"Air"}
+];
 
-    const branches = [
-        "Tikus","Kerbau","Macan","Kelinci",
-        "Naga","Ular","Kuda","Kambing",
-        "Monyet","Ayam","Anjing","Babi"
-    ];
+const branches=["Tikus","Kerbau","Macan","Kelinci","Naga","Ular","Kuda","Kambing","Monyet","Ayam","Anjing","Babi"];
 
-    let formatter = new Intl.DateTimeFormat(
-        'zh-CN-u-ca-chinese',
-        {year:'numeric', month:'numeric', day:'numeric'}
-    );
+let parts=new Intl.DateTimeFormat('zh-CN-u-ca-chinese',
+{year:'numeric',month:'numeric',day:'numeric'}).formatToParts(date);
 
-    let parts = formatter.formatToParts(date);
+let lunarYear=parseInt(parts.find(p=>p.type==="year").value);
+let lunarMonth=parseInt(parts.find(p=>p.type==="month").value);
+let lunarDay=parseInt(parts.find(p=>p.type==="day").value);
 
-    let lunarYear = parseInt(parts.find(p=>p.type==="year").value);
-    let lunarMonth = parseInt(parts.find(p=>p.type==="month").value);
-    let lunarDay = parseInt(parts.find(p=>p.type==="day").value);
+if(isNaN(lunarYear)) return "";
 
-    if(isNaN(lunarYear)) return "";
+let stemIndex=(lunarYear-4)%10;
+let branchIndex=(lunarYear-4)%12;
+if(stemIndex<0) stemIndex+=10;
+if(branchIndex<0) branchIndex+=12;
 
-    let stemIndex = (lunarYear - 4) % 10;
-    let branchIndex = (lunarYear - 4) % 12;
+let elemenClass="elemen-"+stems[stemIndex].elemen;
 
-    if(stemIndex < 0) stemIndex += 10;
-    if(branchIndex < 0) branchIndex += 12;
-
-    const monthNames = [
-        "Zheng Yue","Er Yue","San Yue","Si Yue",
-        "Wu Yue","Liu Yue","Qi Yue","Ba Yue",
-        "Jiu Yue","Shi Yue","Shiyi Yue","Shier Yue"
-    ];
-
-    return `
+return `<span class="${elemenClass}">
 Imlek ${date.getFullYear()+2697}<br>
-${stems[stemIndex].element} ${branches[branchIndex]}<br>
-Bulan ${lunarMonth} (${monthNames[lunarMonth-1]})<br>
-Hari ${lunarDay}
-`;
+${stems[stemIndex].elemen} ${branches[branchIndex]}
+</span>`;
 }
 
-/* ========================= */
-/* ===== RENDER KALENDER ==== */
-/* ========================= */
+/* ===================== */
+/* ====== RENDER ======= */
+/* ===================== */
 function renderCalendar(){
 
-    const calendar = document.getElementById("calendar");
-    calendar.innerHTML = "";
+const calendar=document.getElementById("calendar");
+calendar.innerHTML="";
 
-    let year = currentDate.getFullYear();
-    let month = currentDate.getMonth();
+let year=currentDate.getFullYear();
+let month=currentDate.getMonth();
 
-    document.getElementById("monthYear").innerText =
-        currentDate.toLocaleString('id-ID',{month:'long',year:'numeric'});
+document.getElementById("monthYear").innerText=
+currentDate.toLocaleString('id-ID',{month:'long',year:'numeric'});
 
-    const firstDay = new Date(year,month,1);
-    const lastDay = new Date(year,month+1,0);
+let firstDay=new Date(year,month,1);
+let lastDay=new Date(year,month+1,0);
 
-    const dayHeaders = ["Ah","Sn","Sl","Rb","Km","Jm","Sb"];
+const headers=["Ah","Sn","Sl","Rb","Km","Jm","Sb"];
+headers.forEach(h=>{
+let div=document.createElement("div");
+div.className="day-header";
+div.innerText=h;
+calendar.appendChild(div);
+});
 
-    for(let i=0;i<7;i++){
-        let div = document.createElement("div");
-        div.className="day-header";
-        div.innerText = dayHeaders[i];
-        calendar.appendChild(div);
-    }
+for(let i=0;i<firstDay.getDay();i++){
+calendar.appendChild(document.createElement("div"));
+}
 
-    for(let i=0;i<firstDay.getDay();i++){
-        calendar.appendChild(document.createElement("div"));
-    }
+for(let d=1;d<=lastDay.getDate();d++){
 
-    for(let d=1; d<=lastDay.getDate(); d++){
+let date=new Date(year,month,d);
 
-        let date = new Date(year,month,d);
+let hijri=new Intl.DateTimeFormat(
+'id-TN-u-ca-islamic',
+{day:'numeric',month:'short',year:'numeric'}
+).format(date);
 
-        let hijriFull = new Intl.DateTimeFormat(
-            'id-TN-u-ca-islamic',
-            {day:'numeric', month:'long', year:'numeric'}
-        ).format(date);
+let box=document.createElement("div");
+box.className="calendar-box";
 
-        let box = document.createElement("div");
-        box.className="calendar-box";
+if(date.toDateString()===new Date().toDateString())
+box.classList.add("today");
 
-        if(date.toDateString() === new Date().toDateString()){
-            box.classList.add("today");
-        }
+box.innerHTML=`
+<div class="masehi">${d}</div>
+<div class="hijri">${hijri}</div>
+<div class="jawa">${getJawa(date)}</div>
+<div class="cina">${getCina(date)}</div>
+`;
 
-        box.innerHTML = `
-        <div class="masehi">${d}</div>
-        <div class="hijri">${hijriFull}</div>
-        <div class="jawa">${getJavanese(date)}</div>
-        <div class="cina">${getChinese(date)}</div>
-        `;
-
-        calendar.appendChild(box);
-    }
+calendar.appendChild(box);
+}
 }
 
 function changeMonth(step){
-    currentDate.setMonth(currentDate.getMonth()+step);
-    renderCalendar();
+currentDate.setMonth(currentDate.getMonth()+step);
+renderCalendar();
 }
 
 renderCalendar();
+
+/* ===================== */
+/* ====== SHOLAT ======= */
+/* ===================== */
+function fetchPrayer(lat,lon){
+
+let today=new Date().toISOString().split("T")[0];
+let cache=localStorage.getItem("prayer-"+today);
+
+if(cache){
+displayPrayer(JSON.parse(cache));
+return;
+}
+
+fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=11`)
+.then(res=>res.json())
+.then(data=>{
+localStorage.setItem("prayer-"+today,JSON.stringify(data.data.timings));
+displayPrayer(data.data.timings);
+});
+}
+
+function displayPrayer(times){
+
+let container=document.getElementById("prayerTimes");
+container.innerHTML="";
+
+const order=["Imsak","Fajr","Dhuhr","Asr","Maghrib","Isha"];
+
+order.forEach(p=>{
+let div=document.createElement("div");
+div.className="prayer-item";
+
+if(p==="Fajr"||p==="Maghrib")
+div.classList.add("highlight-fasting");
+
+div.innerHTML=`<span>${p}</span><span>${times[p]}</span>`;
+container.appendChild(div);
+});
+
+startCountdown(times);
+}
+
+function startCountdown(times){
+
+const prayerOrder=["Fajr","Dhuhr","Asr","Maghrib","Isha"];
+
+function update(){
+let now=new Date();
+for(let p of prayerOrder){
+let [h,m]=times[p].split(":");
+let t=new Date();
+t.setHours(h,m,0);
+if(t>now){
+let diff=(t-now)/1000;
+let hr=Math.floor(diff/3600);
+let min=Math.floor((diff%3600)/60);
+let sec=Math.floor(diff%60);
+document.getElementById("countdown").innerText=
+"Menuju "+p+" : "+hr+"j "+min+"m "+sec+"d";
+return;
+}
+}
+}
+setInterval(update,1000);
+}
+
+navigator.geolocation.getCurrentPosition(pos=>{
+document.getElementById("locationInfo").innerText="Lokasi terdeteksi otomatis";
+fetchPrayer(pos.coords.latitude,pos.coords.longitude);
+});
 </script>
 
 </body>
